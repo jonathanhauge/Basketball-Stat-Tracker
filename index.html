@@ -56,7 +56,22 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .periods button.on{background:#fff;color:var(--navy);border-color:#fff}
 .arrow{font-weight:700;font-size:13px;letter-spacing:.14em;background:transparent;border:1px solid #fff;border-radius:4px;padding:6px 14px;color:#fff}
 .sample{margin:8px 0 0;font-size:12px;color:var(--warn);font-weight:700}
-@media (max-width:560px){.score{font-size:40px}.tname{font-size:17px}.board{gap:8px;padding:10px}}
+@media (max-width:600px){
+  .board{grid-template-columns:1fr 1fr;gap:12px 10px;padding:14px 12px}
+  .team,.team.r{flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;gap:6px}
+  .team.r .score{order:-1}
+  .board>.team{grid-row:1;grid-column:1}
+  .board>.team.r{grid-column:2}
+  .board>.mid{grid-row:2}
+  .team>div{min-width:0;max-width:100%}
+  .team.r{border-left:1px solid rgba(255,255,255,.25)}
+  .score{font-size:56px}
+  .tname{font-size:19px}
+  .mid{grid-column:1 / -1;width:100%;gap:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.25)}
+  .periods{width:100%}
+  .periods button{flex:1;padding-block:8px}
+  .arrow{width:100%;padding-block:9px}
+}
 
 /* Lanes */
 .lanes{display:grid;grid-template-columns:270px minmax(0,1fr) 320px;gap:12px;margin-top:12px;align-items:start}
@@ -828,8 +843,41 @@ render();
 })();
 </script>
 
+<div class="offchip" id="offchip" role="status" aria-live="polite" hidden><i></i><span></span></div>
+<style>
+.offchip{margin-top:8px;width:fit-content;display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 10px;font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.offchip i{width:9px;height:9px;border-radius:50%;background:var(--warn);flex:none}
+.offchip.ok i{background:#1f9a5c} .offchip.bad i{background:var(--def)}
+.offchip.ok{opacity:.85}
+</style>
 <script>
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+(function(){
+  const ASSETS=["index.html", "manifest.webmanifest", "jspdf.umd.min.js", "jspdf.plugin.autotable.min.js", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "favicon-32.png"];
+  const chip=document.getElementById('offchip'), txt=chip.querySelector('span');
+  const brd=document.getElementById('board'); if(brd)brd.after(chip);
+  function show(state,msg){chip.hidden=false;chip.className='offchip '+state;txt.textContent=msg;}
+  if(!('serviceWorker' in navigator)||!('caches' in window)){show('bad','Offline not supported in this browser');return;}
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(e){}
+  async function ready(){
+    const keys=(await caches.keys()).filter(k=>k.startsWith('bench-tracker-'));
+    for(const k of keys){const c=await caches.open(k);let all=true;
+      for(const a of ASSETS){if(!(await c.match(a,{ignoreSearch:true}))){all=false;break;}}
+      if(all)return true;}
+    return false;
+  }
+  let tries=0;
+  async function check(){
+    let ok=false; try{ok=await ready();}catch(e){}
+    if(ok){show('ok',navigator.onLine?'Ready for offline':'Offline · ready');return;}
+    if(!navigator.onLine){show('bad','Not saved for offline. Connect to Wi-Fi and open again');return;}
+    show('','Saving for offline. Keep this open');
+    if(++tries<90)setTimeout(check,1000); else show('bad','Could not save for offline. Reopen on Wi-Fi');
+  }
+  check();
+  window.addEventListener('online',()=>{tries=0;check();});
+  window.addEventListener('offline',check);
+})();
 </script>
 </body>
 </html>
