@@ -35,6 +35,48 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.btos,.btabs{display:none}
+/* Bench layout: iPad portrait */
+body.bench::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:13;background:var(--bg)}
+.bench .board{position:sticky;top:env(safe-area-inset-top,0px);z-index:12;padding:10px 14px;gap:10px;box-shadow:0 6px 0 var(--bg)}
+.bench .score{font-size:50px}
+.bench .tname{font-size:20px}
+.bench .btos{display:flex;align-items:center;gap:4px;margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--on-navy-muted)}
+.bench .team.r .btos{justify-content:flex-end}
+.bench .btos .sep{margin-left:6px}
+.bench .btos .pip{width:22px;height:22px;border-radius:4px;border:1.5px solid rgba(255,255,255,.55);background:transparent;padding:0}
+.bench .btos .pip.u{background:var(--def);border-color:var(--def)}
+.bench .periods button{padding:6px 10px}
+.bench .offchip{padding:3px 8px;font-size:10px;margin-top:6px}
+.bench .sample{margin-top:6px}
+.bench .lanes{grid-template-columns:minmax(0,1fr);gap:10px}
+.bench .inpanel{order:1}
+.bench .btabs{order:2;display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel)}
+.bench .btabs button{flex:1;border:0;background:transparent;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.bench .btabs button+button{border-left:1px solid var(--line)}
+.bench .btabs button.on{background:var(--navy);color:#fff}
+.bench .roster,.bench .stats{order:3;grid-column:auto}
+.bench[data-tab="fouls"] .stats{display:none}
+.bench[data-tab="stats"] .roster,.bench[data-tab="log"] .roster{display:none}
+.bench[data-tab="stats"] #logPart{display:none}
+.bench[data-tab="log"] #statPart{display:none}
+.bench .grid{grid-template-columns:repeat(4,1fr);gap:10px}
+.bench .k{min-height:78px;font-size:28px}
+.bench .k span{font-size:11px}
+.bench .k.foulk{grid-column:1 / -1;grid-row:auto;min-height:60px;flex-direction:row;gap:12px}
+.bench .side{padding:12px 14px}
+.bench .side .lab{font-size:28px}
+.bench .undo{width:56px;height:56px}
+.bench .pchips{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
+.bench .pchip{min-height:58px}
+.bench .two{display:none}
+.bench .plist{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bench .p{grid-template-columns:34px 1fr;grid-template-areas:"no nm" "no dots";row-gap:4px;min-height:56px}
+.bench .p .no{grid-area:no}
+.bench .p .nm{grid-area:nm}
+.bench .p .dots{grid-area:dots}
+.bench .roster .h small{display:none}
+.bench .tiles{grid-template-columns:repeat(4,1fr)}
 .tagstrip{margin-top:10px;border:2px solid var(--navy);border-radius:8px;padding:10px;background:var(--panel)}
 .taghead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .tagq{font-family:var(--label);font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);line-height:1.05}
@@ -264,7 +306,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
 <p class="sample" id="sampleNote" hidden>Sample game loaded so you can see it work. Open Game setup below and tap Start new game when you are ready.</p>
 
 <div class="lanes">
-  <section class="panel roster">
+  <section class="panel roster" id="tabFouls">
     <h2 class="h">Player fouls <small id="fixHint">Tap a player to add a foul</small></h2>
     <div class="plist" id="plist"></div>
     <div class="fixrow">
@@ -273,7 +315,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     </div>
   </section>
 
-  <section class="panel">
+  <section class="panel inpanel">
     <div class="side O" id="side">
       <div><div class="lab" id="sideLab">Offense</div><div class="trail" id="trail"></div></div>
       <div style="display:flex;gap:6px;align-items:center"><button class="btn" id="flip">Switch side</button><button class="undo" id="undo" aria-label="Undo last play" title="Undo last play"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/></svg></button></div>
@@ -334,16 +376,23 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     </div>
   </section>
 
+  <nav class="btabs" id="btabs" aria-label="Bench views">
+    <button data-tab="fouls" class="on">Fouls</button><button data-tab="stats">Stats</button><button data-tab="log">Log</button>
+  </nav>
   <section class="panel stats">
+    <div id="statPart">
     <div class="seg" id="seg">
       <button data-f="game" class="on">Game</button><button data-f="h1">1st half</button><button data-f="h2">2nd half</button><button data-f="q">This qtr</button>
     </div>
     <div class="tiles" id="tiles"></div>
     <table id="tbl"></table>
     <div id="pWrap" hidden><h2 class="h" style="margin-top:14px">Player stats <small id="pNote"></small></h2><div class="ptw"><table class="ptbl" id="ptbl"></table></div></div>
+    </div>
+    <div id="logPart">
     <button class="btn" id="openReport" style="width:100%;margin-top:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--navy);color:#fff;border-color:var(--navy)">Game report and export</button>
     <div class="feedbar"><h2 class="h">Game log</h2><button class="btn" id="untagOnly" hidden>Show only untagged</button></div>
     <div class="feed" id="feed"></div>
+    </div>
   </section>
 </div>
 
@@ -961,15 +1010,28 @@ async function savePDF(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
 }
 
+/* Bench (iPad portrait) layout */
+const benchMQ=window.matchMedia('(min-width:601px) and (max-width:1099px) and (orientation:portrait)');
+let benchTab='fouls'; try{benchTab=localStorage.getItem('fbBenchTab')||'fouls';}catch(e){}
+function applyBench(){
+  document.body.classList.toggle('bench',benchMQ.matches);
+  document.body.dataset.tab=benchTab;
+  document.querySelectorAll('#btabs [data-tab]').forEach(b=>{b.classList.toggle('on',b.dataset.tab===benchTab);b.setAttribute('aria-pressed',b.dataset.tab===benchTab);});
+}
+function btos(k){
+  const t=S.to[k], pip=(kind,i,used)=>`<button class="pip ${used?'u':''}" data-t="${k}|${kind}" aria-label="${kind==='full'?'Full':'30 second'} timeout ${i+1}${used?', used':''}"></button>`;
+  return `<div class="btos"><span>TO</span>${[0,1,2].map(i=>pip('full',i,i<t.full)).join('')}<span class="sep">30</span>${[0,1].map(i=>pip('s30',i,i<t.s30)).join('')}</div>`;
+}
+
 /* Render */
 let fixMode=false;
 function render(){
   const [u,t]=score(S); const q=Math.min(S.period,3);
   $('board').innerHTML=`
-    <div class="team"><div class="score">${u}</div><div style="min-width:0"><div class="tname">${esc(usName())}</div><div class="tsub">Fouls ${S.tf.us[q]}${S.tf.them[q]>=5?' · we shoot bonus':''}</div></div></div>
+    <div class="team"><div class="score">${u}</div><div style="min-width:0"><div class="tname">${esc(usName())}</div><div class="tsub">Fouls ${S.tf.us[q]}${S.tf.them[q]>=5?' · we shoot bonus':''}</div>${btos('us')}</div></div>
     <div class="mid"><div class="periods">${PER.map((p,i)=>`<button data-p="${i}" class="${i===S.period?'on':''}">${p}</button>`).join('')}</div>
       <button class="arrow" id="arrow" aria-label="Possession arrow, tap to flip">${S.arrow==='us'?'◀ ARROW':'ARROW ▶'}</button></div>
-    <div class="team r"><div style="min-width:0"><div class="tname">${esc(S.opp)}</div><div class="tsub">Fouls ${S.tf.them[q]}${S.tf.us[q]>=5?' · they shoot bonus':''}</div></div><div class="score">${t}</div></div>`;
+    <div class="team r"><div style="min-width:0"><div class="tname">${esc(S.opp)}</div><div class="tsub">Fouls ${S.tf.them[q]}${S.tf.us[q]>=5?' · they shoot bonus':''}</div>${btos('them')}</div><div class="score">${t}</div></div>`;
   $('board').querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>setPeriod(+b.dataset.p));
   $('arrow').onclick=()=>{snap();flipArrow();commit();toast('Arrow now to '+tName(S.arrow));};
   $('sampleNote').hidden=!S.sample;
@@ -1121,6 +1183,9 @@ $('bkNo').onclick=()=>{pendingRestore=null;$('bkConfirm').hidden=true;};
 $('bkYes').onclick=()=>{if(!pendingRestore)return;snap();S=pendingRestore;if(!S.us)S.us='FAIRMONT';S.sample=false;pendingRestore=null;
   $('bkConfirm').hidden=true;$('bkText').hidden=true;$('bkText').value='';commit();toast('Backup restored');};
 $('openReport').onclick=openReport;
+document.querySelectorAll('#btabs [data-tab]').forEach(b=>b.onclick=()=>{benchTab=b.dataset.tab;try{localStorage.setItem('fbBenchTab',benchTab);}catch(e){}applyBench();});
+try{benchMQ.addEventListener('change',applyBench);}catch(e){try{benchMQ.addListener(applyBench);}catch(_){}}
+applyBench();
 $('tagSkip').onclick=skipTag;
 $('tagNone').onclick=()=>answerTag(-1);
 $('untagOnly').onclick=()=>{untagOnly=!untagOnly;render();};
