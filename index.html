@@ -35,6 +35,47 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.tagstrip{margin-top:10px;border:2px solid var(--navy);border-radius:8px;padding:10px;background:var(--panel)}
+.taghead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.tagq{font-family:var(--label);font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);line-height:1.05}
+.tagbtns{display:flex;gap:6px;flex-wrap:wrap}
+.pchips{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:6px;margin-top:8px}
+.pchip{border:1px solid var(--line);background:var(--chip);border-radius:4px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;color:var(--ink);min-width:0}
+.pchip b{font-family:var(--display);font-size:24px;font-weight:400;line-height:1}
+.pchip small{font-size:10px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pchip.on{background:var(--navy);border-color:var(--navy);color:#fff}.pchip.on small{color:var(--on-navy-muted)}
+.pchip.out{opacity:.4}
+.btn.sel{background:var(--navy);border-color:var(--navy);color:#fff}
+.ftshoot{margin-top:10px}
+.ftshoot .slab{margin-top:0}
+.p .nm small{display:block;font-size:10.5px;color:var(--muted);font-weight:500;margin-top:2px;overflow:hidden;text-overflow:ellipsis}
+.tagme{display:inline-block;margin-left:6px;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--warn);border-radius:3px;padding:1px 5px;vertical-align:1px;white-space:nowrap}
+.feed div.click{cursor:pointer;border-radius:4px}
+.feed div.click:hover,.feed div.click:focus-visible{background:var(--chip)}
+.feedbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px}
+.feedbar .h{margin:0}
+.dlg{position:fixed;inset:0;z-index:25;background:rgba(9,31,64,.45);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.dlgcard{background:var(--panel);border-radius:8px;width:100%;max-width:640px;padding:16px}
+.dlgtop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dlgtitle{font-family:var(--label);font-size:22px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);line-height:1.05}
+.dlgsub{font-size:13px;color:var(--text);margin-top:4px}
+.slotrow{border-top:1px solid var(--hair);padding:12px 0 4px;margin-top:10px}
+.slotlab{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;color:var(--ink);font-size:13px}
+.slotlab .tagme{margin:0}
+.ptw{overflow-x:auto;margin-top:4px}
+.ptbl{min-width:100%}
+.ptbl th,.ptbl td{padding:5px 4px;font-size:12px;white-space:nowrap}
+.ptbl tr.un td{color:var(--muted);font-style:italic}
+.ptbl tr.tot td{font-weight:700;color:var(--ink);border-top:1px solid var(--line)}
+.tgls{display:grid;gap:6px;margin-top:8px}
+label.tgl{display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-size:13px;font-weight:500;color:var(--text);margin:0;border:1px solid var(--line);border-radius:4px;padding:8px 10px;cursor:pointer}
+label.tgl b{color:var(--ink);font-weight:700;display:block}
+label.tgl small{display:block;font-size:11px;color:var(--muted);font-weight:400}
+label.tgl input{appearance:none;-webkit-appearance:none;width:40px;height:24px;border-radius:12px;background:var(--line);position:relative;flex:none;cursor:pointer;margin:0;transition:background .15s}
+label.tgl input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+label.tgl input:checked{background:var(--navy)}
+label.tgl input:checked::after{left:19px}
+label.tgl input:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
 html,body{background:var(--bg);color:var(--text)}
 body{font-family:var(--body);font-size:14px;-webkit-tap-highlight-color:transparent;
   padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));padding-block:10px 24px}
@@ -248,6 +289,10 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <button class="k reb" data-a="drb">DR<span>Def reb</span></button>
       <button class="k foulk" data-a="foul">FOUL<span>Either team</span></button>
     </div>
+    <div class="tagstrip" id="tagStrip" hidden>
+      <div class="taghead"><div class="tagq" id="tagQ"></div><div class="tagbtns"><button class="btn" id="tagNone" hidden>No assist</button><button class="btn" id="tagSkip">Skip</button></div></div>
+      <div class="pchips" id="tagChips"></div>
+    </div>
     <div class="and1" id="and1" hidden><span id="and1Txt"></span>
       <button class="btn" id="and1Btn" style="font-weight:700">And-1 free throw</button></div>
     <div class="sheet ftsheet" id="ftSheet" hidden>
@@ -261,6 +306,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
         <button class="ftk miss" id="ftMiss">MISS</button>
       </div>
       <div class="ftdots" id="ftDots"></div>
+      <div class="ftshoot" id="ftShoot" hidden><div class="slab">Shooter</div><div class="pchips" id="ftShootChips"></div></div>
     </div>
     <div class="sheet" id="foulSheet" hidden>
       <div class="h" style="margin:0">Foul on <button class="btn" id="foulCancel">Cancel</button></div>
@@ -294,8 +340,9 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     </div>
     <div class="tiles" id="tiles"></div>
     <table id="tbl"></table>
+    <div id="pWrap" hidden><h2 class="h" style="margin-top:14px">Player stats <small id="pNote"></small></h2><div class="ptw"><table class="ptbl" id="ptbl"></table></div></div>
     <button class="btn" id="openReport" style="width:100%;margin-top:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--navy);color:#fff;border-color:var(--navy)">Game report and export</button>
-    <h2 class="h" style="margin-top:14px">Game log</h2>
+    <div class="feedbar"><h2 class="h">Game log</h2><button class="btn" id="untagOnly" hidden>Show only untagged</button></div>
     <div class="feed" id="feed"></div>
   </section>
 </div>
@@ -313,6 +360,18 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <div class="fixrow">
         <button class="btn grow" id="wake">Keep screen on</button>
         <button class="btn grow" id="copy">Copy game summary</button>
+      </div>
+    </div>
+    <div>
+      <label>Player stats to track</label>
+      <p style="margin:0;font-size:12px;color:var(--muted)">Our team only. Turn on what you want for this game. Your choices stay set for the next game.</p>
+      <div class="tgls" id="tgls">
+        <label class="tgl"><input type="checkbox" id="trk-pts" data-trk="pts"><span><b>Points</b><small>Who scored, and who shot free throws</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-miss" data-trk="miss"><span><b>Missed shots</b><small>Who missed, for FG% and 3PT%</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-reb" data-trk="reb"><span><b>Rebounds</b><small>Our offensive and defensive rebounds</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-ast" data-trk="ast"><span><b>Assists</b><small>Who passed on a made basket</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-stl" data-trk="stl"><span><b>Steals</b><small>Who took it on their turnover</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-to" data-trk="to"><span><b>Turnovers</b><small>Who turned it over</small></span></label>
       </div>
     </div>
     <div>
@@ -351,6 +410,10 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     </div>
   </div>
 </details>
+<div class="dlg" id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgTitle"><div class="dlgcard">
+  <div class="dlgtop"><div><div class="dlgtitle" id="dlgTitle">Play details</div><div class="dlgsub" id="dlgSub"></div></div><button class="btn" id="dlgDone" style="background:var(--navy);color:#fff;border-color:var(--navy)">Done</button></div>
+  <div id="dlgBody"></div>
+</div></div>
 <div class="report" id="report" hidden role="dialog" aria-modal="true" aria-labelledby="repTitle">
   <div class="repbar">
     <h2 id="repTitle">Game report</h2>
@@ -379,7 +442,7 @@ function blank(roster){
   return {us:'FAIRMONT',opp:'Opponent',notes:'',period:0,cur:{side:'O',ev:[]},awaitReb:false,poss:[],
     roster:(roster||ROSTER.map(([n,name])=>({n,name}))).map(p=>({n:p.n,name:p.name,f:0})),
     tf:{us:[0,0,0,0],them:[0,0,0,0]},to:{us:{full:0,s30:0},them:{full:0,s30:0}},
-    arrow:'us',feed:[],sample:false};
+    arrow:'us',feed:[],sample:false,track:{}};
 }
 function sample(){
   const s=blank(); s.opp='Miamisburg'; s.sample=true; s.notes='#10 shooter (3s). #23 all 2s.';
@@ -399,15 +462,17 @@ function score(s){let u=0,t=0;s.poss.forEach(p=>{p.side==='O'?u+=p.pts:t+=p.pts}
 function closeInto(s,cur,end){
   const p={side:cur.side,q:cur.q!=null?cur.q:s.period,ev:cur.ev.slice(),pts:ptsOf(cur.ev),end};
   if(cur.and1)p.and1=true;
+  if(cur.tg)p.tg=cur.tg;
   s.poss.push(p);
+  if(s.tag&&s.tag.p==='cur')s.tag.p=s.poss.length-1;
   const [u,t]=score({poss:s.poss,cur:{side:'O',ev:[]}});
   s.feed.unshift({q:p.q,txt:(p.side==='O'?(s.us||'FAIRMONT')+': ':s.opp+': ')+label(p),sc:u+'-'+t,o:p.side,pid:s.poss.length});
   s.cur={side:p.side==='O'?'D':'O',ev:[]}; s.awaitReb=false; s.ft=null;
 }
 function label(p){
   const m={m2:'made 2',m3:'made 3',x2:'missed 2',x3:'missed 3',orb:'off reb',to:'turnover',jb:'jump ball, kept on arrow'};
-  const parts=p.ev.map(e=>e==='ft:1/1'?'FT make':e==='ft:0/1'?'FT miss':e.startsWith('ft:')?'FT '+e.slice(3):m[e]);
-  if(p.end==='miss')parts.push('def reb'); if(p.end==='other')parts.push('ended'); if(p.end==='jump')parts.push('jump ball, lost on arrow');
+  const parts=p.ev.map((e,i)=>(e==='ft:1/1'?'FT make':e==='ft:0/1'?'FT miss':e.startsWith('ft:')?'FT '+e.slice(3):m[e])+tagTxt(p,i,e));
+  if(p.end==='miss')parts.push('def reb'+tagTxt(p,'end','end')); if(p.end==='other')parts.push('ended'); if(p.end==='jump')parts.push('jump ball, lost on arrow');
   return parts.join(', ')+(p.pts?'  (+'+p.pts+')':'');
 }
 
@@ -439,21 +504,142 @@ function act(a){
   if(a==='ft'){closeSheets();openFT();return;}
   if(a==='foul'){openFoul();return;}
   snap();
-  const c=S.cur;
-  if(a==='m2'||a==='m3'){c.ev.push(a);closeInto(S,c,'score');}
-  else if(a==='x2'||a==='x3'){c.ev.push(a);S.awaitReb=true;}
-  else if(a==='orb'){if(!S.awaitReb){hist.pop();toast('Log the miss first');return;}c.ev.push('orb');S.awaitReb=false;}
-  else if(a==='drb'){if(!S.awaitReb){hist.pop();toast('Log the miss first');return;}closeInto(S,c,'miss');}
-  else if(a==='to'){c.ev.push('to');closeInto(S,c,'to');}
+  const c=S.cur; S.tag=null;
+  if(a==='m2'||a==='m3'){c.ev.push(a);const i=c.ev.length-1;closeInto(S,c,'score');queueTag(S.poss.length-1,i);}
+  else if(a==='x2'||a==='x3'){c.ev.push(a);S.awaitReb=true;queueTag('cur',c.ev.length-1);}
+  else if(a==='orb'){if(!S.awaitReb){hist.pop();toast('Log the miss first');return;}c.ev.push('orb');S.awaitReb=false;queueTag('cur',c.ev.length-1);}
+  else if(a==='drb'){if(!S.awaitReb){hist.pop();toast('Log the miss first');return;}closeInto(S,c,'miss');queueTag(S.poss.length-1,'end');}
+  else if(a==='to'){c.ev.push('to');const i=c.ev.length-1;closeInto(S,c,'to');queueTag(S.poss.length-1,i);}
   commit();
 }
-function openFT(){
-  snap(); S.ft={n:S.ftN||2,k:0,res:[]}; commit();
+
+/* Player tagging */
+const TRK=()=>S.track||(S.track={});
+const anyTrk=()=>Object.values(TRK()).some(Boolean);
+const validN=v=>typeof v==='number'&&v>=0;
+function slotsFor(p){
+  const t=TRK(), out=[]; if(!p||!p.ev)return out;
+  p.ev.forEach((e,i)=>{
+    if(p.side==='O'){
+      if(e==='m2'||e==='m3'){ if(t.pts)out.push({key:i,field:'by',kind:'score',e}); if(t.ast)out.push({key:i,field:'ast',kind:'ast',e}); }
+      else if((e==='x2'||e==='x3')&&t.miss)out.push({key:i,field:'by',kind:'miss',e});
+      else if(e.startsWith('ft:')&&t.pts)out.push({key:i,field:'by',kind:'ft',e});
+      else if(e==='orb'&&t.reb)out.push({key:i,field:'by',kind:'oreb',e});
+      else if(e==='to'&&t.to)out.push({key:i,field:'by',kind:'tov',e});
+    } else if(e==='to'&&t.stl)out.push({key:i,field:'by',kind:'stl',e});
+  });
+  if(p.side==='D'&&p.end==='miss'&&t.reb)out.push({key:'end',field:'by',kind:'dreb',e:'end'});
+  return out;
 }
+const getTag=(p,key,field)=>p&&p.tg&&p.tg[key]?p.tg[key][field]:undefined;
+function setTag(p,key,field,val){p.tg=p.tg||{};p.tg[key]=p.tg[key]||{};if(val===undefined)delete p.tg[key][field];else p.tg[key][field]=val;}
+const untagged=p=>slotsFor(p).filter(x=>getTag(p,x.key,x.field)===undefined).length;
+function tagTxt(p,key,e){
+  if(!p||!p.tg||!p.tg[key])return '';
+  const by=p.tg[key].by, as=p.tg[key].ast, parts=[];
+  if(validN(by))parts.push((p.side==='D'&&e==='to'?'stl #':'#')+by);
+  if(validN(as))parts.push('ast #'+as);
+  return parts.length?' ('+parts.join(', ')+')':'';
+}
+const QTXT={score:e=>'Who scored the '+(e==='m3'?'3':'2')+'?',ast:()=>'Assisted by?',miss:e=>'Who missed the '+(e==='x3'?'3':'2')+'?',ft:()=>'Free throw shooter?',oreb:()=>'Who got the offensive rebound?',dreb:()=>'Who got the defensive rebound?',tov:()=>'Who turned it over?',stl:()=>'Who got the steal?'};
+const SLOTNAME={score:e=>'Made '+(e==='m3'?'3':'2')+' · scorer',ast:e=>'Made '+(e==='m3'?'3':'2')+' · assist',miss:e=>'Missed '+(e==='x3'?'3':'2')+' · shooter',ft:e=>(e==='ft:1/1'?'FT make':e==='ft:0/1'?'FT miss':'Free throw')+' · shooter',oreb:()=>'Offensive rebound',dreb:()=>'Defensive rebound',tov:()=>'Turnover by',stl:()=>'Steal by'};
+const NONELAB={ast:'No assist',stl:'No steal'};
+function tagTarget(){ const t=S.tag; if(!t)return null; const P=t.p==='cur'?S.cur:S.poss[t.p]; if(!P)return null; if(t.key!=='end'&&!P.ev[t.key])return null; return P; }
+function queueTag(pref,key){
+  const P=pref==='cur'?S.cur:S.poss[pref]; if(!P){S.tag=null;return;}
+  const sl=slotsFor(P).filter(x=>x.key===key&&x.kind!=='ft'&&getTag(P,x.key,x.field)===undefined);
+  S.tag=sl.length?{p:pref,key,fields:sl.map(x=>x.field)}:null;
+}
+function curSlot(){ const P=tagTarget(); if(!P)return null; const t=S.tag; return slotsFor(P).find(x=>x.key===t.key&&x.field===t.fields[0])||null; }
+function answerTag(val){
+  const P=tagTarget(), sl=curSlot(); if(!P||!sl){S.tag=null;render();return;}
+  snap(); setTag(P,sl.key,sl.field,val); S.tag.fields.shift(); if(!S.tag.fields.length)S.tag=null;
+  commit(); if(validN(val))toast('#'+val+' · '+SLOTNAME[sl.kind](sl.e));
+}
+function skipTag(){ if(!S.tag)return; snap(); S.tag.fields.shift(); if(!S.tag.fields.length)S.tag=null; commit(); }
+function chipsHTML(sel,excl,attr){
+  return S.roster.map(p=>p.n===excl?'':`<button class="pchip ${p.f>=5?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
+}
+function renderTag(){
+  const sl=curSlot(); $('tagStrip').hidden=!sl; if(!sl){S.tag=null;return;}
+  const P=tagTarget(); $('tagQ').textContent=QTXT[sl.kind](sl.e);
+  const excl=sl.field==='ast'?getTag(P,sl.key,'by'):undefined;
+  $('tagChips').innerHTML=chipsHTML(undefined,excl,'data-tagn');
+  $('tagChips').querySelectorAll('[data-tagn]').forEach(b=>b.onclick=()=>answerTag(+b.dataset.tagn));
+  const nl=NONELAB[sl.kind]; $('tagNone').hidden=!nl; if(nl)$('tagNone').textContent=nl;
+}
+function pstats(list){
+  const z=()=>({pts:0,fgm:0,fga:0,t3m:0,t3a:0,ftm:0,fta:0,oreb:0,dreb:0,ast:0,stl:0,tov:0});
+  const m={}, T=z(), g=n=>m[n]||(m[n]=z());
+  list.forEach(p=>{ if(!p||!p.ev)return;
+    p.ev.forEach((e,i)=>{ const by=getTag(p,i,'by'), as=getTag(p,i,'ast');
+      if(p.side==='O'){
+        if(e==='m2'||e==='m3'){const v=e==='m3'?3:2; T.pts+=v;T.fgm++;T.fga++; if(v===3){T.t3m++;T.t3a++;}
+          if(validN(by)){const x=g(by);x.pts+=v;x.fgm++;x.fga++;if(v===3){x.t3m++;x.t3a++;}}
+          if(validN(as)){g(as).ast++;T.ast++;}}
+        else if(e==='x2'||e==='x3'){T.fga++; if(e==='x3')T.t3a++; if(validN(by)){const x=g(by);x.fga++;if(e==='x3')x.t3a++;}}
+        else if(e.startsWith('ft:')){const [mm,aa]=e.slice(3).split('/').map(Number);T.ftm+=mm;T.fta+=aa;T.pts+=mm; if(validN(by)){const x=g(by);x.ftm+=mm;x.fta+=aa;x.pts+=mm;}}
+        else if(e==='orb'){T.oreb++; if(validN(by))g(by).oreb++;}
+        else if(e==='to'){T.tov++; if(validN(by))g(by).tov++;}
+      } else if(e==='to'&&validN(by)){g(by).stl++;T.stl++;}
+    });
+    if(p.side==='D'&&p.end==='miss'){T.dreb++; const by=getTag(p,'end','by'); if(validN(by))g(by).dreb++;}
+  });
+  return {m,T};
+}
+function pcols(){
+  const t=TRK(), c=[];
+  if(t.pts)c.push(['PTS',r=>r.pts]);
+  if(t.pts||t.miss){c.push(['FG',r=>t.miss?r.fgm+'/'+r.fga:r.fgm]); c.push(['3PT',r=>t.miss?r.t3m+'/'+r.t3a:r.t3m]);}
+  if(t.miss)c.push(['FG%',r=>pct(r.fgm,r.fga)]);
+  if(t.pts)c.push(['FT',r=>r.ftm+'/'+r.fta]);
+  if(t.reb){c.push(['OREB',r=>r.oreb]);c.push(['DREB',r=>r.dreb]);c.push(['REB',r=>r.oreb+r.dreb]);}
+  if(t.ast)c.push(['AST',r=>r.ast]);
+  if(t.stl)c.push(['STL',r=>r.stl]);
+  if(t.to)c.push(['TO',r=>r.tov]);
+  return c;
+}
+function ptable(list){
+  const {m,T}=pstats(list), cols=pcols(); if(!cols.length)return null;
+  const rows=[]; const sum={pts:0,fgm:0,fga:0,t3m:0,t3a:0,ftm:0,fta:0,oreb:0,dreb:0,ast:0,stl:0,tov:0};
+  S.roster.forEach(p=>{const r=m[p.n]; if(!r)return; Object.keys(sum).forEach(k=>sum[k]+=r[k]);
+    if(cols.some(([h,f])=>{const v=f(r);return v&&v!=='0/0'&&v!=='-';}))rows.push({n:p.n,name:p.name,cells:cols.map(([h,f])=>f(r))});});
+  Object.keys(m).forEach(n=>{if(!S.roster.some(p=>String(p.n)===String(n))){const r=m[n];Object.keys(sum).forEach(k=>sum[k]+=r[k]);rows.push({n,name:'(not on roster)',cells:cols.map(([h,f])=>f(r))});}});
+  const un={}; Object.keys(sum).forEach(k=>un[k]=T[k]-sum[k]);
+  const unCells=cols.map(([h,f])=>(h==='AST'||h==='STL')?'–':(h==='FG%'?'':f(un)));
+  const anyUn=['pts','fga','fta','oreb','dreb','tov'].some(k=>un[k]>0);
+  return {head:['#','Player',...cols.map(c=>c[0])],rows,un:anyUn?unCells:null,tot:cols.map(([h,f])=>(h==='STL')?T.stl:f(T))};
+}
+function openPlay(pi){
+  const P=S.poss[pi]; if(!P)return; dlgPid=pi; renderDlg(); $('dlg').hidden=false; $('dlgDone').focus();
+}
+let dlgPid=null, untagOnly=false;
+function renderDlg(){
+  const P=S.poss[dlgPid]; if(!P){$('dlg').hidden=true;return;}
+  $('dlgTitle').textContent=PER[P.q]+' · '+(P.side==='O'?usName():S.opp)+' possession';
+  $('dlgSub').textContent=label(P);
+  const sl=slotsFor(P);
+  let h='';
+  if(!sl.length)h='<p style="font-size:13px;color:var(--text);margin:12px 0 0">Nothing to tag on this play with the stats you are tracking.</p>';
+  sl.forEach((x,j)=>{const v=getTag(P,x.key,x.field); const nl=NONELAB[x.kind];
+    h+=`<div class="slotrow"><div class="slotlab"><span>${SLOTNAME[x.kind](x.e)}</span>${v===undefined?'<span class="tagme">To tag</span>':`<button class="btn" data-clr="${j}">Clear</button>`}</div>
+      <div class="pchips">${chipsHTML(v,x.field==='ast'?getTag(P,x.key,'by'):undefined,'data-s'+j)}</div>
+      ${nl?`<div class="fixrow"><button class="btn ${v===-1?'sel':''}" data-none="${j}">${nl}</button></div>`:''}</div>`;});
+  $('dlgBody').innerHTML=h;
+  sl.forEach((x,j)=>{
+    $('dlgBody').querySelectorAll('[data-s'+j+']').forEach(b=>b.onclick=()=>{snap();setTag(P,x.key,x.field,+b.getAttribute('data-s'+j));commit();renderDlg();});
+  });
+  $('dlgBody').querySelectorAll('[data-clr]').forEach(b=>b.onclick=()=>{const x=sl[+b.dataset.clr];snap();setTag(P,x.key,x.field,undefined);commit();renderDlg();});
+  $('dlgBody').querySelectorAll('[data-none]').forEach(b=>b.onclick=()=>{const x=sl[+b.dataset.none];snap();setTag(P,x.key,x.field,-1);commit();renderDlg();});
+}
+function openFT(){
+  snap(); S.tag=null; S.ft={n:S.ftN||2,k:0,res:[],start:S.cur.ev.length}; commit();
+}
+function setShooter(n){ if(!S.ft)return; snap(); S.ft.by=n; for(let i=S.ft.start||0;i<S.cur.ev.length;i++){if(S.cur.ev[i].startsWith('ft:'))setTag(S.cur,i,'by',n);} commit(); }
 function setFTn(n){ if(!S.ft||n<=S.ft.k)return; snap(); S.ft.n=n; if(!S.ft.and1)S.ftN=n; commit(); }
 function ftShot(made){
   if(!S.ft)return; snap();
-  const f=S.ft; S.cur.ev.push(made?'ft:1/1':'ft:0/1'); f.k++; f.res.push(made?1:0);
+  const f=S.ft; S.tag=null; S.cur.ev.push(made?'ft:1/1':'ft:0/1'); if(validN(f.by))setTag(S.cur,S.cur.ev.length-1,'by',f.by); f.k++; f.res.push(made?1:0);
   if(f.k<f.n){ commit(); toast((made?'Make':'Miss')+'. Shot '+(f.k+1)+' of '+f.n+' next'); return; }
   if(made){ closeInto(S,S.cur,'score'); commit(); toast('Free throws done'); }
   else { S.ft=null; S.awaitReb=true; commit(); toast('Missed last free throw. Who got the rebound?'); }
@@ -468,8 +654,11 @@ function ftCancel(){
 function and1FT(){
   const last=S.poss[S.poss.length-1]; if(!last)return; snap();
   const pid=S.poss.length; S.poss.pop(); S.feed=S.feed.filter(f=>f.pid!==pid);
-  S.cur={side:last.side,ev:last.ev.slice(),and1:true,q:last.q}; S.awaitReb=false;
-  S.ft={n:1,k:0,res:[],and1:true}; commit();
+  if(S.tag&&S.tag.p===pid-1)S.tag.p='cur';
+  S.cur={side:last.side,ev:last.ev.slice(),and1:true,q:last.q}; if(last.tg)S.cur.tg=last.tg; S.awaitReb=false;
+  let mi=-1; last.ev.forEach((e,i)=>{if(e==='m2'||e==='m3')mi=i;});
+  const sc=mi>=0?getTag(last,mi,'by'):undefined;
+  S.ft={n:1,k:0,res:[],and1:true,start:S.cur.ev.length}; if(validN(sc))S.ft.by=sc; commit();
 }
 function renderFT(){
   const f=S.ft; $('ftSheet').hidden=!f; if(!f)return;
@@ -481,6 +670,8 @@ function renderFT(){
   let d='<span>Shots</span>'; for(let i=0;i<f.n;i++){const r=f.res[i]; d+=`<i class="${r===1?'m':r===0?'x':i===f.k?'next':''}">${r===1?'✓':r===0?'✕':''}</i>`;}
   $('ftDots').innerHTML=d;
   $('ftCancel').textContent=f.k===0?'Cancel':'Stop here';
+  const showSh=!!TRK().pts&&S.cur.side==='O'; $('ftShoot').hidden=!showSh;
+  if(showSh){$('ftShootChips').innerHTML=chipsHTML(f.by,undefined,'data-shn');$('ftShootChips').querySelectorAll('[data-shn]').forEach(b=>b.onclick=()=>setShooter(+b.dataset.shn));}
 }
 let ftAnd=false;
 function openFTOld(and1){
@@ -566,10 +757,11 @@ function timeout(team,kind){
 let filt='game';
 function inFilt(q){ if(filt==='game')return true; if(filt==='h1')return q<=1; if(filt==='h2')return q>=2; return q===S.period; }
 function stats(pred){
-  pred=pred||(p=>inFilt(p.q)); const all=S.poss; const z=()=>({pts:0,poss:0,fgm:0,fga:0,t2m:0,t2a:0,t3m:0,t3a:0,ftm:0,fta:0,to:0,orb:0,stops:0,pot:0,tof:0});
+  pred=pred||(p=>inFilt(p.q)); const all=S.poss; const z=()=>({scp:0,pts:0,poss:0,fgm:0,fga:0,t2m:0,t2a:0,t3m:0,t3a:0,ftm:0,fta:0,to:0,orb:0,stops:0,pot:0,tof:0});
   const r={O:z(),D:z()};
   all.forEach((p,i)=>{
     if(!pred(p))return; const x=r[p.side]; x.poss++; x.pts+=p.pts; if(p.pts===0)x.stops++;
+    const oi=p.ev.indexOf('orb'); if(oi>=0)x.scp+=ptsOf(p.ev.slice(oi+1));
     p.ev.forEach(e=>{
       if(e==='m2'){x.fgm++;x.fga++;x.t2m++;x.t2a++;} else if(e==='m3'){x.fgm++;x.fga++;x.t3m++;x.t3a++;}
       else if(e==='x2'){x.fga++;x.t2a++;} else if(e==='x3'){x.fga++;x.t3a++;}
@@ -607,12 +799,15 @@ function reportData(){
     rows.push(['FT %',...cols.map(c=>pct(g(c).ftm,g(c).fta))]);
     rows.push(['Turnovers',...cols.map(c=>g(c).to)]);
     rows.push(['Off rebounds',...cols.map(c=>g(c).orb)]);
+    rows.push(['2nd chance pts',...cols.map(c=>g(c).scp)]);
+    if(side==='O'&&TRK().ast){const pc=cols.map(c=>pstats(S.poss.filter(p=>c.q<0||p.q===c.q)).T);
+      rows.push(['Assists',...pc.map(t=>t.ast)]); rows.push(['Assisted FG %',...pc.map(t=>pct(t.ast,t.fgm))]);}
     rows.push(['Pts off opp TOs',...cols.map(c=>g(c).pot)]);
     rows.push(['Team fouls',...tf(k)]);
   });
   // possessions with running score
   let u=0,t=0; const poss=S.poss.map((p,i)=>{ if(p.side==='O')u+=p.pts; else t+=p.pts;
-    return {n:i+1,q:PER[p.q],team:p.side==='O'?usName():S.opp,side:p.side,play:label({ev:p.ev,pts:0,end:p.end}).replace(/\s+\(\+\d+\)$/,''),
+    return {n:i+1,q:PER[p.q],team:p.side==='O'?usName():S.opp,side:p.side,play:label(Object.assign({},p,{pts:0})).replace(/\s+\(\+\d+\)$/,''),
       result:p.pts?'Score':p.end==='to'?'Turnover':p.end==='jump'?'Jump ball':'Empty',pts:p.pts,score:u+'-'+t};});
   const fouls=S.roster.filter(p=>p.f).map(p=>'#'+p.n+' '+p.name+': '+p.f);
   const tos={us:S.to.us,them:S.to.them};
@@ -625,6 +820,11 @@ function openReport(){
   d.rows.forEach(r=>{ if(r.grp){h+=`<tr class="grp"><td colspan="${d.cols.length+1}">${esc(r.grp)}</td></tr>`;return;}
     h+=`<tr><td>${r[0]}</td>${r.slice(1).map((v,i)=>`<td class="${i===d.cols.length-1?'tot':''}">${v}</td>`).join('')}</tr>`;});
   h+=`</table></div></section>`;
+  const PT=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
+  if(PT){h+=`<section class="panel"><h3 class="h">Player stats <small>${esc(usName())}</small></h3><div class="tw"><table class="rt"><tr>${PT.head.map((x,i)=>`<th style="${i<2?'text-align:left':''}">${x}</th>`).join('')}</tr>`+
+    PT.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(r.name)}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
+    (PT.un?`<tr><td></td><td style="text-align:left;font-style:italic">Unassigned</td>${PT.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
+    `<tr><td></td><td style="text-align:left" class="tot">Team</td>${PT.tot.map(c=>`<td class="tot">${c}</td>`).join('')}</tr></table></div></section>`;}
   h+=`<section class="panel"><h3 class="h">Fouls and timeouts</h3><div style="display:grid;gap:6px;font-size:13px;color:var(--text)">
     <div><b style="color:var(--ink)">Player fouls:</b> ${esc(d.fouls.join(', ')||'none')}</div>
     <div><b style="color:var(--ink)">Timeouts used, ${esc(usName())}:</b> ${d.tos.us.full} full, ${d.tos.us.s30} thirty-second</div>
@@ -641,6 +841,11 @@ function reportText(){
   const w=[16,...d.cols.map(()=>8)]; const pad=(v,n,l)=>{v=String(v);return l?v.padEnd(n):v.padStart(n);};
   let o=`${usName()} ${u}, ${S.opp} ${t} (${PER[S.period]})\n\nTEAM STATS\n`+pad('',w[0],1)+d.cols.map((c,i)=>pad(c.lab,w[i+1])).join('')+'\n';
   d.rows.forEach(r=>{o+=r.grp?`\n${r.grp.toUpperCase()}\n`:pad(r[0],w[0],1)+r.slice(1).map((v,i)=>pad(v,w[i+1])).join('')+'\n';});
+  const PTx=anyTrk()?ptable(S.poss):null;
+  if(PTx){o+='\nPLAYER STATS\n'+pad('#',4,1)+pad('Player',18,1)+PTx.head.slice(2).map(x=>pad(x,7)).join('')+'\n';
+    PTx.rows.forEach(r=>{o+=pad(r.n,4,1)+pad(String(r.name).slice(0,17),18,1)+r.cells.map(c=>pad(c,7)).join('')+'\n';});
+    if(PTx.un)o+=pad('',4,1)+pad('Unassigned',18,1)+PTx.un.map(c=>pad(c,7)).join('')+'\n';
+    o+=pad('',4,1)+pad('Team',18,1)+PTx.tot.map(c=>pad(c,7)).join('')+'\n';}
   o+=`\nPlayer fouls: ${d.fouls.join(', ')||'none'}\nTimeouts ${usName()}: ${d.tos.us.full} full, ${d.tos.us.s30} 30s. ${S.opp}: ${d.tos.them.full} full, ${d.tos.them.s30} 30s\n`;
   if(S.notes)o+=`Notes: ${S.notes}\n`;
   o+=`\nPOSSESSIONS\n`; d.poss.forEach(p=>{o+=`${pad(p.n,3)}  ${p.q}  ${pad(p.score,7,1)} ${p.team}: ${p.play}${p.pts?' (+'+p.pts+')':''}\n`;});
@@ -650,6 +855,8 @@ function reportTSV(){
   const d=reportData(); const T=a=>a.map(v=>String(v).replace(/\t|\n/g,' ')).join('\t');
   let o=T(['Team stats',...d.cols.map(c=>c.lab)])+'\n';
   d.rows.forEach(r=>{o+=r.grp?T([r.grp])+'\n':T(r)+'\n';});
+  const PTs=anyTrk()?ptable(S.poss):null;
+  if(PTs){o+='\n'+T(PTs.head)+'\n'; PTs.rows.forEach(r=>{o+=T([r.n,r.name,...r.cells.map(c=>"'"+c)])+'\n';}); if(PTs.un)o+=T(['','Unassigned',...PTs.un.map(c=>"'"+c)])+'\n'; o+=T(['','Team',...PTs.tot.map(c=>"'"+c)])+'\n';}
   o+='\n'+T(['#','Qtr','Team','Play','Result','Pts','Score'])+'\n';
   d.poss.forEach(p=>{o+=T([p.n,p.q,p.team,p.play,p.result,p.pts,"'"+p.score])+'\n';});
   return o;
@@ -699,7 +906,20 @@ function buildPDF(){
       if(h.section==='body'&&h.column.index===last&&h.cell.raw&&typeof h.cell.raw==='string')h.cell.styles.fontStyle='bold';
       if(h.section==='body'&&h.column.index===last)h.cell.styles.textColor=C.navy; }});
   y=doc.lastAutoTable.finalY+22;
+  // player stats
+  const PTp=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
+  if(PTp){ if(y>600){doc.addPage();y=50;}
+    section(`Player stats · ${usName()}`);
+    const bodyP=PTp.rows.map(r=>[r.n,r.name,...r.cells.map(String)]);
+    if(PTp.un)bodyP.push([{content:'',styles:{}},{content:'Unassigned',styles:{fontStyle:'normal',textColor:C.muted}},...PTp.un.map(c=>({content:String(c),styles:{textColor:C.muted}}))]);
+    bodyP.push(['',{content:'Team',styles:{fontStyle:'bold',textColor:C.navy}},...PTp.tot.map(c=>({content:String(c),styles:{fontStyle:'bold',textColor:C.navy}}))]);
+    doc.autoTable({startY:y,head:[PTp.head.map(x=>x.toUpperCase())],body:bodyP,margin:{left:M,right:M,top:50},theme:'plain',styles:base,
+      headStyles:{font:fam,fontStyle:'bold',fontSize:7.5,textColor:[255,255,255],fillColor:C.navy,halign:'right'},
+      columnStyles:{0:{cellWidth:26,halign:'right',textColor:C.muted},1:{halign:'left',textColor:C.navy,cellWidth:120}},
+      didParseCell:hh=>{ if(hh.section==='head'&&hh.column.index<=1)hh.cell.styles.halign=hh.column.index===0?'right':'left'; if(hh.section==='body'&&hh.column.index>1)hh.cell.styles.halign='right'; }});
+    y=doc.lastAutoTable.finalY+22; }
   // fouls and timeouts
+  if(y>660){doc.addPage();y=50;}
   section('Fouls and timeouts');
   doc.setFontSize(8.5);
   const PH=doc.internal.pageSize.getHeight();
@@ -755,7 +975,12 @@ function render(){
   $('sampleNote').hidden=!S.sample;
 
   // roster
-  $('plist').innerHTML=S.roster.map((p,i)=>`<button class="p ${p.f>=5?'out':p.f===4?'f4':p.f===3?'f3':''}" data-i="${i}"><span class="no">${p.n}</span><span class="nm">${esc(p.name)}</span><span class="dots">${[0,1,2,3,4].map(k=>`<i class="${k<p.f?'f':''}"></i>`).join('')}</span></button>`).join('');
+  const ALLP=S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[]);
+  const PSall=anyTrk()?pstats(ALLP).m:{};
+  const pline=n=>{const r=PSall[n],t=TRK(); if(!r)return ''; const a=[];
+    if(t.pts)a.push(r.pts+' pts'); if(t.reb)a.push((r.oreb+r.dreb)+' reb'); if(t.ast&&r.ast)a.push(r.ast+' ast'); if(t.stl&&r.stl)a.push(r.stl+' stl'); if(t.to&&r.tov)a.push(r.tov+' to');
+    return a.length?`<small>${a.join(' · ')}</small>`:'';};
+  $('plist').innerHTML=S.roster.map((p,i)=>`<button class="p ${p.f>=5?'out':p.f===4?'f4':p.f===3?'f3':''}" data-i="${i}"><span class="no">${p.n}</span><span class="nm">${esc(p.name)}${pline(p.n)}</span><span class="dots">${[0,1,2,3,4].map(k=>`<i class="${k<p.f?'f':''}"></i>`).join('')}</span></button>`).join('');
   $('plist').querySelectorAll('.p').forEach(b=>b.onclick=()=>foul(+b.dataset.i));
   $('fixBtn').classList.toggle('on',fixMode);
   $('fixHint').textContent=fixMode?'Tap the player to remove one foul':'Tap a player to add a foul';
@@ -766,7 +991,7 @@ function render(){
   $('trail').textContent=S.cur.ev.length?label({ev:S.cur.ev,pts:ptsOf(S.cur.ev)})+(S.awaitReb?' … who got the rebound?':''):'New possession';
   document.querySelectorAll('.k.reb').forEach(b=>{b.classList.toggle('hot',S.awaitReb);b.disabled=!S.awaitReb||!!S.ft;});
   document.querySelectorAll('.k:not(.reb):not(.foulk)').forEach(b=>b.disabled=S.awaitReb||!!S.ft);
-  renderFT();
+  renderFT(); renderTag();
   if(S.ft)$('trail').textContent=label({ev:S.cur.ev,pts:ptsOf(S.cur.ev)})||'Free throws';
   $('flip').disabled=S.cur.ev.length>0;
   $('undo').disabled=!hist.length;
@@ -801,13 +1026,29 @@ function render(){
     <div class="tile O"><div class="l">Pts off their TOs</div><div class="v">${O.pot}</div><div class="s">off ${O.tof} forced TOs</div></div>
     <div class="tile D"><div class="l">Pts off our TOs</div><div class="v">${D.pot}</div><div class="s">off ${D.tof} of our TOs</div></div>`;
   const row=(l,a,b)=>`<tr><td>${l}</td><td>${a}</td><td>${b}</td></tr>`;
+  const curIn=filt==='game'||(filt==='q')||(filt==='h1'&&S.period<=1)||(filt==='h2'&&S.period>=2);
+  const PLIST=S.poss.filter(p=>inFilt(p.q)).concat(curIn&&S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[]);
+  const PS=pstats(PLIST);
   $('tbl').innerHTML=`<tr><th></th><th>${esc(usName()).slice(0,12)}</th><th>${esc(S.opp).slice(0,12)}</th></tr>`+
     row('FG',`${O.fgm}/${O.fga} · ${pct(O.fgm,O.fga)}`,`${D.fgm}/${D.fga} · ${pct(D.fgm,D.fga)}`)+
     row('2PT',`${O.t2m}/${O.t2a}`,`${D.t2m}/${D.t2a}`)+
     row('3PT',`${O.t3m}/${O.t3a} · ${pct(O.t3m,O.t3a)}`,`${D.t3m}/${D.t3a} · ${pct(D.t3m,D.t3a)}`)+
     row('FT',`${O.ftm}/${O.fta} · ${pct(O.ftm,O.fta)}`,`${D.ftm}/${D.fta} · ${pct(D.ftm,D.fta)}`)+
-    row('Turnovers',O.to,D.to)+row('Off rebounds',O.orb,D.orb)+row('Possessions',O.poss,D.poss);
-  $('feed').innerHTML=S.feed.slice(0,80).map(f=>`<div><span><span style="color:var(--muted)">${PER[f.q]}</span> ${esc(f.txt)}</span><b>${f.sc}</b></div>`).join('')||'<div>Nothing logged yet</div>';
+    row('Turnovers',O.to,D.to)+row('Off rebounds',O.orb,D.orb)+row('2nd chance pts',O.scp,D.scp)+row('Possessions',O.poss,D.poss)+(TRK().ast?row('Assists',PS.T.ast,'–'):'');
+  const PT=anyTrk()?ptable(PLIST):null; $('pWrap').hidden=!PT;
+  if(PT){ $('pNote').textContent=PT.un?'Unassigned row: plays not tagged yet':'';
+    $('ptbl').innerHTML=`<tr>${PT.head.map((h,i)=>`<th style="${i<2?'text-align:left':''}">${h}</th>`).join('')}</tr>`+
+      PT.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(String(r.name).split(' ').pop())}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
+      (PT.un?`<tr class="un"><td></td><td style="text-align:left">Unassigned</td>${PT.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
+      `<tr class="tot"><td></td><td style="text-align:left">Team</td>${PT.tot.map(c=>`<td>${c}</td>`).join('')}</tr>`; }
+  const totalUn=anyTrk()?S.poss.reduce((a,p)=>a+untagged(p),0):0;
+  $('untagOnly').hidden=!anyTrk(); $('untagOnly').textContent=untagOnly?'Show all plays':'Show only untagged'+(totalUn?` (${totalUn})`:'');
+  const rowsF=S.feed.filter(f=>{ if(!untagOnly)return true; const P=f.pid?S.poss[f.pid-1]:null; return P&&untagged(P)>0; }).slice(0,untagOnly?400:80);
+  $('feed').innerHTML=rowsF.map(f=>{ const P=f.pid?S.poss[f.pid-1]:null; const ok=P&&anyTrk()&&slotsFor(P).length>0; const un=P&&anyTrk()?untagged(P):0;
+    const txt=P?(P.side==='O'?usName():S.opp)+': '+label(P):f.txt;
+    return `<div class="${ok?'click':''}" ${ok?`data-pid="${f.pid}" role="button" tabindex="0"`:''}><span><span style="color:var(--muted)">${PER[f.q]}</span> ${esc(txt)}${un?`<span class="tagme">${un} to tag</span>`:''}</span><b>${f.sc}</b></div>`;}).join('')||`<div>${untagOnly?'Everything is tagged':'Nothing logged yet'}</div>`;
+  $('feed').querySelectorAll('[data-pid]').forEach(d=>{d.onclick=()=>openPlay(+d.dataset.pid-1);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPlay(+d.dataset.pid-1);}};});
+  document.querySelectorAll('[data-trk]').forEach(cb=>{cb.checked=!!TRK()[cb.dataset.trk];});
 
   if(document.activeElement!==$('oppName'))$('oppName').value=S.opp;
   if(document.activeElement!==$('usName'))$('usName').value=usName();
@@ -843,7 +1084,7 @@ $('saveRoster').onclick=()=>{
 };
 $('newGame').onclick=()=>$('confirmBox').hidden=false;
 $('noNew').onclick=()=>$('confirmBox').hidden=true;
-$('yesNew').onclick=()=>{snap();const opp='Opponent';const keepUs=S.us;S=blank(S.roster);S.opp=opp;S.us=keepUs||'FAIRMONT';$('confirmBox').hidden=true;commit();toast('New game ready');};
+$('yesNew').onclick=()=>{snap();const opp='Opponent';const keepUs=S.us,keepTrk=Object.assign({},S.track||{});S=blank(S.roster);S.opp=opp;S.us=keepUs||'FAIRMONT';S.track=keepTrk;$('confirmBox').hidden=true;commit();toast('New game ready');};
 
 /* Backup and restore */
 function stamp(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -880,6 +1121,14 @@ $('bkNo').onclick=()=>{pendingRestore=null;$('bkConfirm').hidden=true;};
 $('bkYes').onclick=()=>{if(!pendingRestore)return;snap();S=pendingRestore;if(!S.us)S.us='FAIRMONT';S.sample=false;pendingRestore=null;
   $('bkConfirm').hidden=true;$('bkText').hidden=true;$('bkText').value='';commit();toast('Backup restored');};
 $('openReport').onclick=openReport;
+$('tagSkip').onclick=skipTag;
+$('tagNone').onclick=()=>answerTag(-1);
+$('untagOnly').onclick=()=>{untagOnly=!untagOnly;render();};
+$('dlgDone').onclick=()=>{$('dlg').hidden=true;dlgPid=null;};
+$('dlg').addEventListener('click',e=>{if(e.target===$('dlg')){$('dlg').hidden=true;dlgPid=null;}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('dlg').hidden){$('dlg').hidden=true;dlgPid=null;}});
+document.querySelectorAll('[data-trk]').forEach(cb=>cb.onchange=()=>{snap();TRK()[cb.dataset.trk]=cb.checked;if(!cb.checked&&S.tag)queueTagRefresh();commit();toast((cb.checked?'Tracking ':'Stopped tracking ')+cb.closest('label').querySelector('b').textContent.toLowerCase());});
+function queueTagRefresh(){ if(!S.tag)return; const P=tagTarget(); if(!P){S.tag=null;return;} const ok=slotsFor(P).filter(x=>x.key===S.tag.key).map(x=>x.field); S.tag.fields=S.tag.fields.filter(f=>ok.includes(f)); if(!S.tag.fields.length)S.tag=null; }
 $('repClose').onclick=()=>{$('report').hidden=true;};
 $('repCopy').onclick=()=>copyOut(reportText(),'Report copied');
 $('repSheet').onclick=()=>copyOut(reportTSV(),'Copied. Paste into Sheets, Numbers or Excel');
