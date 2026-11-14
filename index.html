@@ -35,6 +35,9 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+#foulSheet{border-color:var(--warn);border-width:3px}
+#foulSheet>.h{font-family:var(--label);font-size:22px;letter-spacing:.04em;color:var(--warn)}
+#foulSheet>.h .btn{font-family:var(--body);font-size:13px;letter-spacing:0;color:var(--ink)}
 .btos,.btabs{display:none}
 /* Bench layout: iPad portrait */
 body.bench::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:13;background:var(--bg)}
@@ -559,7 +562,8 @@ function openFoul(){
   $('foulRow').innerHTML=S.roster.map((p,i)=>`<button class="btn fchip ${p.f>=5?'out':p.f===4?'f4':p.f===3?'f3':''}" data-fi="${i}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())} · ${p.f}</small></button>`).join('');
   $('foulRow').querySelectorAll('[data-fi]').forEach(b=>b.onclick=()=>{$('foulSheet').hidden=true;foul(+b.dataset.fi,true);});
   $('foulOpp').textContent=S.opp+' team foul'; $('foulUsLab').textContent=usName()+': tap the player';
-  $('foulSheet').hidden=false;
+  $('foulSheet').hidden=false; $('tagStrip').hidden=true;
+  try{$('foulSheet').scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}
 }
 function oppFoul(){
   snap();const q=Math.min(S.period,3);S.tf.them[q]++;const [u,t]=score(S);
@@ -641,6 +645,7 @@ function chipsHTML(sel,excl,attr){
   return S.roster.map(p=>p.n===excl?'':`<button class="pchip ${p.f>=5?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
 }
 function renderTag(){
+  if(!$('foulSheet').hidden){$('tagStrip').hidden=true;return;}
   const sl=curSlot(); $('tagStrip').hidden=!sl; if(!sl){S.tag=null;return;}
   const P=tagTarget(); $('tagQ').textContent=QTXT[sl.kind](sl.e);
   const excl=sl.field==='ast'?getTag(P,sl.key,'by'):undefined;
@@ -1176,7 +1181,7 @@ $('flip').onclick=()=>{snap();S.cur.side=S.cur.side==='O'?'D':'O';commit();};
 $('fixBtn').onclick=()=>{fixMode=!fixMode;render();};
 $('oppFoul').onclick=oppFoul;
 $('foulOpp').onclick=()=>{$('foulSheet').hidden=true;oppFoul();};
-$('foulCancel').onclick=()=>$('foulSheet').hidden=true;
+$('foulCancel').onclick=()=>{$('foulSheet').hidden=true;render();};
 document.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{filt=b.dataset.f;document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on',x===b));render();});
 $('usName').oninput=e=>{S.us=e.target.value.trim()||'FAIRMONT';save();render();};
 $('oppName').oninput=e=>{S.opp=e.target.value||'Opponent';save();render();};
