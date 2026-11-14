@@ -35,6 +35,67 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.tcbtn{display:block;width:100%;margin-top:8px;border:2px solid var(--navy);background:var(--panel);color:var(--navy);border-radius:6px;padding:10px;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+.tcbtn:active{background:var(--navy);color:#fff}
+.flowstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-bottom:10px}
+.bench .flowstrip{grid-template-columns:repeat(5,minmax(0,1fr))}
+.flowstrip div{border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-width:0}
+.flowstrip span{display:block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.flowstrip b{display:block;font-size:13px;color:var(--ink);margin-top:2px}
+#fftbl td.win,.tct td.win{color:var(--ink);font-weight:700}
+#fftbl td.win{box-shadow:inset 0 -2px 0 var(--off)}
+.tocard{position:fixed;inset:0;z-index:30;background:rgba(9,31,64,.55);overflow:auto;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
+.tcinner{background:var(--navy);color:#fff;border-radius:10px;max-width:980px;margin:0 auto;padding:16px}
+.tctop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tclabel{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--on-navy-muted)}
+.tcdone{border:0;background:#fff;color:var(--navy);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;padding:12px 22px}
+.tchead{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-top:12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.2)}
+.tcteam.r{text-align:right}
+.tcname{font-family:var(--label);font-size:24px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.tcscore{font-family:var(--display);font-size:88px;line-height:.9;margin-top:6px}
+.tcmeta{font-size:13px;color:var(--on-navy-muted);margin-top:6px;font-weight:500}
+.tcto{margin-top:10px;display:inline-grid;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:8px 12px}
+.tctol{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-muted)}
+.tcrow{display:flex;align-items:center;gap:7px}
+.tcteam.r .tcrow{justify-content:flex-end}
+.tck{width:34px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;text-align:left}
+.tcrow i{width:30px;height:30px;border-radius:5px;display:block}
+.tcrow i.left{background:#fff;box-shadow:inset 0 0 0 2px #fff}
+.tcrow i.used{background:transparent;box-shadow:inset 0 0 0 2px rgba(255,255,255,.3);position:relative}
+.tcrow i.used::after{content:"";position:absolute;left:5px;right:5px;top:50%;height:2px;background:rgba(255,255,255,.35);transform:rotate(-45deg)}
+.tcrow b{font-family:var(--display);font-size:32px;font-weight:400;line-height:1;min-width:24px;text-align:right}
+.tcrow b.zero{color:var(--def)}
+.tcbonus{display:inline-block;background:var(--def);color:#fff;border-radius:3px;padding:1px 6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tcwarn{display:inline-block;background:var(--warn);color:#fff;border-radius:3px;padding:1px 6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tcmid{font-family:var(--label);font-size:30px;letter-spacing:.06em;border:1px solid rgba(255,255,255,.5);border-radius:6px;padding:6px 12px}
+.tcflow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:14px}
+.tcflow div{background:rgba(255,255,255,.08);border-radius:6px;padding:10px 12px}
+.tcflow span{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--on-navy-muted)}
+.tcflow b{display:block;font-size:19px;margin-top:4px}
+.tcbox{background:#fff;color:var(--ink);border-radius:8px;padding:12px;margin-top:12px;min-width:0}
+.tcbt{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tcbt small{font-size:11px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--muted)}
+.tcpfs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:10px}
+.tcpf{display:grid;grid-template-columns:44px 1fr auto;grid-template-rows:auto auto;align-items:center;column-gap:8px;border:2px solid var(--line);border-radius:6px;padding:8px}
+.tcpf b{grid-row:1 / span 2;font-family:var(--display);font-size:34px;font-weight:400;text-align:center;line-height:1}
+.tcpf span{font-size:14px;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcpf em{grid-row:1 / span 2;grid-column:3;font-style:normal;font-weight:700;font-size:26px}
+.tcpf .tcdots{display:flex;gap:4px}
+.tcpf .tcdots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--gray)}
+.tcpf .tcdots i.f{background:var(--def);border-color:var(--def)}
+.tcpf.trouble{border-color:var(--warn);background:#fff4e6}
+.tcpf.trouble em{color:var(--warn)}
+.tcpf.out{border-color:var(--def);background:var(--def-soft)}
+.tcpf.out em{color:var(--def);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.tcnone{font-size:14px;color:var(--muted);margin-top:8px}
+.tcgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tcgrid .tcbox{margin-top:12px}
+@media (max-width:600px){.tcgrid{grid-template-columns:1fr}.tcscore{font-size:60px}}
+.tct{width:100%;border-collapse:collapse;margin-top:8px;font-variant-numeric:tabular-nums}
+.tct th,.tct td{padding:7px 4px;text-align:right;border-bottom:1px solid var(--hair);font-size:15px;color:var(--text)}
+.tct th{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.tct td:first-child,.tct th:first-child{text-align:left;color:var(--ink);font-weight:500;font-size:13px}
+.tct td.win{box-shadow:inset 0 -3px 0 var(--off)}
 #foulSheet{border-color:var(--warn);border-width:3px}
 #foulSheet>.h{font-family:var(--label);font-size:22px;letter-spacing:.04em;color:var(--warn)}
 #foulSheet>.h .btn{font-family:var(--body);font-size:13px;letter-spacing:0;color:var(--ink)}
@@ -87,7 +148,8 @@ body.bench::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area
 .bench .p .nm{grid-area:nm}
 .bench .p .dots{grid-area:dots}
 .bench .roster .h small{display:none}
-.bench .tiles{grid-template-columns:repeat(4,1fr)}
+.bench .tiles{grid-template-columns:repeat(3,1fr)}
+.bench .tile.O{order:1}.bench .tile.D{order:2}
 .tagstrip{margin-top:10px;border:2px solid var(--navy);border-radius:8px;padding:10px;background:var(--panel)}
 .taghead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .tagq{font-family:var(--label);font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);line-height:1.05}
@@ -185,6 +247,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .dots{display:flex;gap:3px}
 .dots i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--gray)}
 .dots i.f{background:var(--def);border-color:var(--def)}
+.dots i.tf,.tcpf .tcdots i.tf{background:#111827;border-color:#111827;box-shadow:0 0 0 1.5px var(--warn)}
+.p .nm small.whyout{color:var(--def);font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-decoration:none}
+.p .nm small.techline{color:var(--warn);font-weight:700}
+.p.out .nm small.whyout{display:block}
+.tcpf em small{font-size:13px;color:var(--warn)}
 .p.f3{border-color:var(--warn);border-width:2px} .p.f4{border-color:var(--def);border-width:2px;background:var(--def-soft)}
 .p.out{opacity:.45;text-decoration:line-through}
 .fixrow{display:flex;gap:6px;margin-top:8px}
@@ -231,8 +298,12 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .ftdots{display:flex;gap:6px;margin-top:8px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .ftdots i{width:22px;height:22px;border-radius:50%;border:2px solid var(--gray);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
 .ftdots i.m{background:var(--navy);border-color:var(--navy)} .ftdots i.x{background:var(--def);border-color:var(--def)} .ftdots i.next{border-color:var(--navy)}
-.foulft{border:2px solid var(--warn);border-radius:6px;padding:8px 10px}
-.foulft .btn{font-weight:700;min-width:64px;min-height:44px}
+.foulft{margin-top:10px;border:3px solid var(--warn);border-radius:8px;padding:10px 12px;background:var(--panel)}
+.fftitle{font-family:var(--label);font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--warn);line-height:1.1}
+.ffbtns{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-top:8px}
+.ffbtns .btn{font-weight:700;min-height:56px;font-size:15px}
+.ffhint{font-size:12px;color:var(--text);margin-top:6px}
+.fttech{margin-top:8px}
 .and1{margin-top:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--text)}
 .minis{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 
@@ -320,6 +391,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
 
 
 <div class="board" id="board"></div>
+<button class="tcbtn" id="tcBtn">Timeout card</button>
 <p class="sample" id="sampleNote" hidden>Sample game loaded so you can see it work. Open Game setup below and tap Start new game when you are ready.</p>
 
 <div class="lanes">
@@ -352,8 +424,16 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <div class="taghead"><div class="tagq" id="tagQ"></div><div class="tagbtns"><button class="btn" id="tagNone" hidden>No assist</button><button class="btn" id="tagSkip">Skip</button></div></div>
       <div class="pchips" id="tagChips"></div>
     </div>
-    <div class="and1 foulft" id="foulFT" hidden><span id="foulFTTxt"></span>
-      <button class="btn" data-ffn="1">1 FT</button><button class="btn" data-ffn="2">2 FT</button><button class="btn" data-ffn="3">3 FT</button></div>
+    <div class="foulft" id="foulFT" hidden>
+      <div class="fftitle" id="foulFTTxt">What kind of foul?</div>
+      <div class="ffbtns" id="ffDef">
+        <button class="btn" data-ff="ground">Ground · no shots</button><button class="btn" data-ff="1">1 FT</button><button class="btn" data-ff="2">2 FT</button><button class="btn" data-ff="3">3 FT</button><button class="btn" data-ff="tech">Technical · 2 FT</button>
+      </div>
+      <div class="ffbtns" id="ffOff">
+        <button class="btn" data-ff="oto">Offensive · turnover</button><button class="btn" data-ff="ground">No shots</button><button class="btn" data-ff="tech">Technical · 2 FT</button>
+      </div>
+      <div class="ffhint" id="ffHint"></div>
+    </div>
     <div class="and1" id="and1" hidden><span id="and1Txt"></span>
       <button class="btn" id="and1Btn" style="font-weight:700">And-1 free throw</button></div>
     <div class="sheet ftsheet" id="ftSheet" hidden>
@@ -367,6 +447,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
         <button class="ftk miss" id="ftMiss">MISS</button>
       </div>
       <div class="ftdots" id="ftDots"></div>
+      <div class="fttech"><button class="btn" id="ftTech">Technical: shooting team keeps the ball</button></div>
       <div class="ftshoot" id="ftShoot" hidden><div class="slab">Shooter</div><div class="pchips" id="ftShootChips"></div></div>
     </div>
     <div class="sheet" id="foulSheet" hidden>
@@ -404,7 +485,10 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <div class="segrow"><button data-f="q0">Q1</button><button data-f="q1">Q2</button><button data-f="q2">Q3</button><button data-f="q3">Q4</button><button data-f="q4" hidden>OT</button></div>
       <div class="segrow"><button data-f="h1">1st half</button><button data-f="h2">2nd half</button><button data-f="game" class="on">Game</button></div>
     </div>
+    <div class="flowstrip" id="flowStrip"></div>
     <div class="tiles" id="tiles"></div>
+    <h2 class="h" style="margin-top:14px">Four Factors</h2>
+    <table id="fftbl"></table>
     <table id="tbl"></table>
     <div id="pWrap" hidden><h2 class="h" style="margin-top:14px">Player stats <small id="pNote"></small></h2><div class="ptw"><table class="ptbl" id="ptbl"></table></div></div>
     </div>
@@ -479,6 +563,10 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     </div>
   </div>
 </details>
+<div class="tocard" id="tocard" hidden role="dialog" aria-modal="true" aria-label="Timeout card"><div class="tcinner">
+  <div class="tctop"><div class="tclabel">Timeout card</div><button class="tcdone" id="tcDone">Done</button></div>
+  <div id="tcBody"></div>
+</div></div>
 <div class="dlg" id="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="dlgTitle"><div class="dlgcard">
   <div class="dlgtop"><div><div class="dlgtitle" id="dlgTitle">Play details</div><div class="dlgsub" id="dlgSub"></div></div><button class="btn" id="dlgDone" style="background:var(--navy);color:#fff;border-color:var(--navy)">Done</button></div>
   <div id="dlgBody"></div>
@@ -559,7 +647,7 @@ function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');
 function closeSheets(){['foulSheet','tipSheet'].forEach(id=>$(id).hidden=true);}
 function openFoul(){
   closeSheets();
-  $('foulRow').innerHTML=S.roster.map((p,i)=>`<button class="btn fchip ${p.f>=5?'out':p.f===4?'f4':p.f===3?'f3':''}" data-fi="${i}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())} · ${p.f}</small></button>`).join('');
+  $('foulRow').innerHTML=S.roster.map((p,i)=>`<button class="btn fchip ${isOut(p)?'out':p.f===4||techs(p)===1?'f4':p.f===3?'f3':''}" data-fi="${i}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())} · ${p.f}${techs(p)?' ('+techs(p)+'T)':''}</small></button>`).join('');
   $('foulRow').querySelectorAll('[data-fi]').forEach(b=>b.onclick=()=>{$('foulSheet').hidden=true;foul(+b.dataset.fi,true);});
   $('foulOpp').textContent=S.opp+' team foul'; $('foulUsLab').textContent=usName()+': tap the player';
   $('foulSheet').hidden=false; $('tagStrip').hidden=true;
@@ -573,7 +661,9 @@ function oppFoul(){
 function afterFoul(team){
   // team = side that committed the foul ('us' or 'them'); defensive foul = the team without the ball
   const defensive=(team==='us'&&S.cur.side==='D')||(team==='them'&&S.cur.side==='O');
-  S.foulFT=false; if(!defensive||S.ft)return;
+  S.foulFT=false; if(S.ft)return;
+  const fpi=team==='us'?S.lastFoulPi:undefined;
+  if(!defensive){ if(!S.awaitReb)S.foulFT={def:false,by:team,pi:fpi}; return; }
   const li=S.cur.ev.length-1, le=S.cur.ev[li];
   if(S.awaitReb&&(le==='x2'||le==='x3')){
     const by=getTag(S.cur,li,'by'); S.cur.ev.pop(); if(S.cur.tg)delete S.cur.tg[li];
@@ -581,9 +671,29 @@ function afterFoul(team){
     S.ft={n:le==='x3'?3:2,k:0,res:[],start:S.cur.ev.length,fromMiss:le,missBy:by};
     if(validN(by))S.ft.by=by;
     const msg='Shooting foul. '+S.ft.n+' free throws for '+(S.cur.side==='O'?usName():S.opp); setTimeout(()=>toast(msg),900);
-  } else if(!S.awaitReb){ S.foulFT=true; }
+  } else if(!S.awaitReb){
+    const q=Math.min(S.period,3), fouls=S.tf[team][q];
+    if(fouls>=5){
+      S.tag=null; S.ft={n:2,k:0,res:[],start:S.cur.ev.length,bonus:true,fpi};
+      const msg='Bonus: 2 free throws for '+(S.cur.side==='O'?usName():S.opp); setTimeout(()=>toast(msg),900);
+    } else S.foulFT={def:true,by:team,pi:fpi};
+  }
 }
 function foulFTOpen(n){ snap(); S.foulFT=false; S.tag=null; S.ft={n,k:0,res:[],start:S.cur.ev.length}; commit(); }
+function foulType(kind){
+  const info=S.foulFT; if(!info)return;
+  if(kind==='1'||kind==='2'||kind==='3'){foulFTOpen(+kind);return;}
+  snap(); S.foulFT=false; S.tag=null;
+  if(kind==='ground'){ commit(); toast('Foul logged. No shots'); return; }
+  if(kind==='oto'){ S.cur.ev.push('to'); const i=S.cur.ev.length-1; closeInto(S,S.cur,'to'); queueTag(S.poss.length-1,i); commit(); toast('Offensive foul logged as a turnover'); return; }
+  if(kind==='tech'){
+    if(info.by==='us'&&info.pi!=null)markTech(info.pi);
+    const shooter=info.by==='us'?'D':'O';  // the team that did NOT commit the foul shoots
+    if(S.cur.side!==shooter){ if(S.cur.ev.length)closeInto(S,S.cur,'other'); S.cur.side=shooter; S.awaitReb=false; }
+    S.ft={n:2,k:0,res:[],start:S.cur.ev.length,tech:true}; commit();
+    toast('Technical: 2 free throws for '+(shooter==='O'?usName():S.opp)+', then their ball'); return;
+  }
+}
 function act(a){
   if(a==='ft'){closeSheets();openFT();return;}
   if(a==='foul'){openFoul();return;}
@@ -642,7 +752,7 @@ function answerTag(val){
 }
 function skipTag(){ if(!S.tag)return; snap(); S.tag.fields.shift(); if(!S.tag.fields.length)S.tag=null; commit(); }
 function chipsHTML(sel,excl,attr){
-  return S.roster.map(p=>p.n===excl?'':`<button class="pchip ${p.f>=5?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
+  return S.roster.map(p=>p.n===excl?'':`<button class="pchip ${isOut(p)?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
 }
 function renderTag(){
   if(!$('foulSheet').hidden){$('tagStrip').hidden=true;return;}
@@ -726,6 +836,7 @@ function ftShot(made){
   if(!S.ft)return; snap();
   const f=S.ft; S.tag=null; S.cur.ev.push(made?'ft:1/1':'ft:0/1'); if(validN(f.by))setTag(S.cur,S.cur.ev.length-1,'by',f.by); f.k++; f.res.push(made?1:0);
   if(f.k<f.n){ commit(); toast((made?'Make':'Miss')+'. Shot '+(f.k+1)+' of '+f.n+' next'); return; }
+  if(f.tech){ S.ft=null; commit(); toast('Technical free throws done. '+(S.cur.side==='O'?usName():S.opp)+' keeps the ball'); return; }
   if(made){ closeInto(S,S.cur,'score'); commit(); toast('Free throws done'); }
   else { S.ft=null; S.awaitReb=true; commit(); toast('Missed last free throw. Who got the rebound?'); }
 }
@@ -749,13 +860,14 @@ function and1FT(){
 function renderFT(){
   const f=S.ft; $('ftSheet').hidden=!f; if(!f)return;
   const team=S.cur.side==='O'?usName():S.opp;
-  $('ftTitle').textContent=(f.and1?'And-1 free throw':'Free throw')+' · '+(f.k+1)+' of '+f.n;
-  $('ftSub').textContent=(f.fromMiss&&f.k===0?'Shooting foul on the missed '+(f.fromMiss==='x3'?'3':'2')+'. Cancel if it was not. ':'')+team+' shooting. '+(f.k+1<f.n?'More shots after this one.':'Last shot. A miss is a live ball.');
+  $('ftTitle').textContent=(f.and1?'And-1 free throw':f.tech?'Technical free throw':f.bonus?'Bonus free throw':'Free throw')+' · '+(f.k+1)+' of '+f.n;
+  $('ftSub').textContent=(f.bonus&&f.k===0?'Bonus free throws. Cancel if this foul had no free throws. ':'')+(f.fromMiss&&f.k===0?'Shooting foul on the missed '+(f.fromMiss==='x3'?'3':'2')+'. Cancel if it was not. ':'')+team+' shooting. '+(f.k+1<f.n?'More shots after this one.':'Last shot. A miss is a live ball.');
   $('ftCount').innerHTML=[1,2,3].map(n=>`<button data-ftn="${n}" class="${n===f.n?'on':''}" ${n<=f.k?'disabled':''} aria-label="${n} free throw${n>1?'s':''} awarded">${n} FT</button>`).join('');
   $('ftCount').querySelectorAll('[data-ftn]').forEach(b=>b.onclick=()=>setFTn(+b.dataset.ftn));
   let d='<span>Shots</span>'; for(let i=0;i<f.n;i++){const r=f.res[i]; d+=`<i class="${r===1?'m':r===0?'x':i===f.k?'next':''}">${r===1?'✓':r===0?'✕':''}</i>`;}
   $('ftDots').innerHTML=d;
   $('ftCancel').textContent=f.k===0?'Cancel':'Stop here';
+  $('ftTech').classList.toggle('sel',!!f.tech); $('ftTech').hidden=!!f.and1||!!f.fromMiss;
   const showSh=!!TRK().pts&&S.cur.side==='O'; $('ftShoot').hidden=!showSh;
   if(showSh){$('ftShootChips').innerHTML=chipsHTML(f.by,undefined,'data-shn');$('ftShootChips').querySelectorAll('[data-shn]').forEach(b=>b.onclick=()=>setShooter(+b.dataset.shn));}
 }
@@ -782,8 +894,8 @@ function addAnd1(m){
 }
 function foul(i,fromPad){
   snap(); const p=S.roster[i]; const q=Math.min(S.period,3);
-  if(fixMode&&!fromPad){ if(p.f>0){p.f--; S.tf.us[q]=Math.max(0,S.tf.us[q]-1);} fixMode=false; }
-  else { p.f++; S.tf.us[q]++; const [u,t]=score(S); S.feed.unshift({q:S.period,txt:'Foul #'+p.n+' '+p.name.split(' ').pop()+' ('+p.f+')',sc:u+'-'+t}); afterFoul('us'); toast('Foul #'+p.n+' ('+p.f+'), team '+S.tf.us[q]); if(p.f===4)toast('#'+p.n+' has 4 fouls'); if(p.f>=5)toast('#'+p.n+' fouled out'); if(S.tf.us[q]===5)setTimeout(()=>toast('5th team foul. '+S.opp+' in the bonus'),p.f>=4?1500:0); }
+  if(fixMode&&!fromPad){ if(p.f>0){p.f--; if(techs(p)>p.f)p.t=p.f; S.tf.us[q]=Math.max(0,S.tf.us[q]-1);} fixMode=false; }
+  else { S.lastFoulPi=i; p.f++; S.tf.us[q]++; const [u,t]=score(S); S.feed.unshift({q:S.period,txt:'Foul #'+p.n+' '+p.name.split(' ').pop()+' ('+p.f+')',sc:u+'-'+t}); afterFoul('us'); toast('Foul #'+p.n+' ('+p.f+'), team '+S.tf.us[q]); if(p.f===4)toast('#'+p.n+' has 4 fouls'); if(p.f>=5)toast('#'+p.n+' fouled out'); if(S.tf.us[q]===5)setTimeout(()=>toast('5th team foul. '+S.opp+' in the bonus'),p.f>=4?1500:0); }
   commit();
 }
 const usName=()=>S.us||'FAIRMONT';
@@ -835,19 +947,21 @@ function setPeriod(np){
 }
 function timeout(team,kind){
   snap(); const t=S.to[team]; const max=kind==='full'?3:2;
-  if(t[kind]>=max){t[kind]=0;} else {t[kind]++; const [u,s]=score(S); S.feed.unshift({q:S.period,txt:'Timeout '+tName(team)+' ('+(kind==='full'?'full':'30s')+')',sc:u+'-'+s});}
-  commit();
+  let called=false;
+  if(t[kind]>=max){t[kind]=0;} else {t[kind]++; called=true; const [u,s]=score(S); S.feed.unshift({q:S.period,txt:'Timeout '+tName(team)+' ('+(kind==='full'?'full':'30s')+')',sc:u+'-'+s});}
+  commit(); if(called)openCard();
 }
 
 /* Stats */
 let filt='game';
 function inFilt(q){ if(filt==='game')return true; if(filt==='h1')return q<=1; if(filt==='h2')return q>=2; if(filt[0]==='q')return q===+filt.slice(1); return true; }
 function stats(pred){
-  pred=pred||(p=>inFilt(p.q)); const all=S.poss; const z=()=>({scp:0,pts:0,poss:0,fgm:0,fga:0,t2m:0,t2a:0,t3m:0,t3a:0,ftm:0,fta:0,to:0,orb:0,stops:0,pot:0,tof:0});
+  pred=pred||(p=>inFilt(p.q)); const all=S.poss; const z=()=>({dmiss:0,scp:0,pts:0,poss:0,fgm:0,fga:0,t2m:0,t2a:0,t3m:0,t3a:0,ftm:0,fta:0,to:0,orb:0,stops:0,pot:0,tof:0});
   const r={O:z(),D:z()};
   all.forEach((p,i)=>{
     if(!pred(p))return; const x=r[p.side]; x.poss++; x.pts+=p.pts; if(p.pts===0)x.stops++;
     const oi=p.ev.indexOf('orb'); if(oi>=0)x.scp+=ptsOf(p.ev.slice(oi+1));
+    if(p.end==='miss')x.dmiss++;
     p.ev.forEach(e=>{
       if(e==='m2'){x.fgm++;x.fga++;x.t2m++;x.t2a++;} else if(e==='m3'){x.fgm++;x.fga++;x.t3m++;x.t3a++;}
       else if(e==='x2'){x.fga++;x.t2a++;} else if(e==='x3'){x.fga++;x.t3a++;}
@@ -860,6 +974,79 @@ function stats(pred){
 }
 const pct=(m,a)=>a?Math.round(100*m/a)+'%':'-';
 const ppp=x=>x.poss?(x.pts/x.poss).toFixed(2):'-';
+
+/* Four Factors and game flow */
+function ff(x){ return {efg:x.fga?(x.fgm+0.5*x.t3m)/x.fga:null, tov:x.poss?x.to/x.poss:null, orb:(x.orb+x.dmiss)?x.orb/(x.orb+x.dmiss):null, ftr:x.fga?x.fta/x.fga:null}; }
+const fpct=v=>v==null?'–':Math.round(v*100)+'%';
+const fdec=v=>v==null?'–':v.toFixed(2);
+const FFROWS=[['Effective FG %','efg',fpct,true],['Turnover %','tov',fpct,false],['Off rebound %','orb',fpct,true],['FT rate (FTA/FGA)','ftr',fdec,true]];
+function flow(){
+  let u=0,t=0,margin=0,maxU=0,maxT=0,changes=0,ties=0,lastLead=0,run={team:null,pts:0},best={us:0,them:0},dry={O:0,D:0};
+  S.poss.forEach(p=>{
+    if(p.pts>0){
+      const team=p.side==='O'?'us':'them';
+      if(team==='us')u+=p.pts; else t+=p.pts;
+      if(run.team===team)run.pts+=p.pts; else run={team,pts:p.pts};
+      if(run.pts>best[team])best[team]=run.pts;
+      margin=u-t; if(margin>maxU)maxU=margin; if(-margin>maxT)maxT=-margin;
+      const lead=Math.sign(margin);
+      if(lead!==0&&lastLead!==0&&lead!==lastLead)changes++;
+      if(lead===0&&(u+t)>0)ties++;
+      if(lead!==0)lastLead=lead;
+      dry[p.side]=0;
+    } else dry[p.side]++;
+  });
+  return {run,best,maxU,maxT,changes,ties,dry};
+}
+function flowLines(){
+  const f=flow(), name=k=>k==='us'?usName():S.opp;
+  return {
+    run:f.run.team?`${name(f.run.team)} ${f.run.pts}-0 run`:'No scoring yet',
+    longest:`${usName()} ${f.best.us}-0 · ${S.opp} ${f.best.them}-0`,
+    lead:`${usName()} by ${f.maxU} · ${S.opp} by ${f.maxT}`,
+    changes:`${f.changes} lead change${f.changes===1?'':'s'} · ${f.ties} tie${f.ties===1?'':'s'}`,
+    dry:`${usName()} ${f.dry.O} · ${S.opp} ${f.dry.D}`,
+    f };
+}
+
+/* Player technicals */
+const techs=p=>p.t||0;
+const isOut=p=>p.f>=5||techs(p)>=2;
+const outWhy=p=>techs(p)>=2?'Ejected':p.f>=5?'Fouled out':'';
+function dotsHTML(p){ const t=Math.min(techs(p),p.f), r=p.f-t; return [0,1,2,3,4].map(k=>`<i class="${k<r?'f':k<r+t?'tf':''}"></i>`).join(''); }
+function markTech(i,on){
+  const p=S.roster[i]; if(!p)return;
+  if(on===false){ p.t=Math.max(0,techs(p)-1); return; }
+  p.t=Math.min(p.f,techs(p)+1);
+  const [u,t]=score(S); S.feed.unshift({q:S.period,txt:'Technical #'+p.n+' '+p.name.split(' ').pop()+' (T'+p.t+', '+p.f+' fouls)',sc:u+'-'+t});
+  const msg=p.t>=2?'#'+p.n+' ejected: 2 technicals':'Technical on #'+p.n+' ('+p.f+' fouls)'; setTimeout(()=>toast(msg),1200);
+}
+
+/* Timeout card */
+function foulTrouble(p){ const q=S.period; return p.f>=4||(q<=1&&p.f>=2)||(q===2&&p.f>=3); }
+function openCard(){ renderCard(); $('tocard').hidden=false; $('tcDone').focus(); }
+function closeCard(){ $('tocard').hidden=true; }
+function renderCard(){
+  const [u,t]=score(S), q=Math.min(S.period,3), L=flowLines();
+  const rq=stats(p=>p.q===S.period), rg=stats(()=>true);
+  const side=k=>{const tf=S.tf[k][q], o=k==='us'?'them':'us', to=S.to[k];
+    return `<div class="tcteam ${k==='them'?'r':''}"><div class="tcname">${esc(tName(k))}</div><div class="tcscore">${k==='us'?u:t}</div>
+      <div class="tcmeta">Fouls ${tf}${tf>=5?' <span class="tcbonus">'+(k==='us'?'They':'We')+' shoot bonus</span>':tf===4?' <span class="tcwarn">1 to bonus</span>':''}</div>
+      <div class="tcto"><div class="tctol">Timeouts left</div>
+        <div class="tcrow"><span class="tck">Full</span>${[0,1,2].map(i=>`<i class="${i<3-to.full?'left':'used'}"></i>`).join('')}<b class="${3-to.full===0?'zero':''}">${3-to.full}</b></div>
+        <div class="tcrow"><span class="tck">30s</span>${[0,1].map(i=>`<i class="${i<2-to.s30?'left':'used'}"></i>`).join('')}<b class="${2-to.s30===0?'zero':''}">${2-to.s30}</b></div></div></div>`;};
+  const fftab=(title,r)=>`<div class="tcbox"><div class="tcbt">${title}</div><table class="tct"><tr><th></th><th>${esc(usName()).slice(0,10)}</th><th>${esc(S.opp).slice(0,10)}</th></tr>`+
+    FFROWS.map(([lab,k,fmt,hi])=>{const a=ff(r.O)[k],b=ff(r.D)[k];const better=a==null||b==null||a===b?0:((a>b)===hi?1:-1);
+      return `<tr><td>${lab}</td><td class="${better>0?'win':''}">${fmt(a)}</td><td class="${better<0?'win':''}">${fmt(b)}</td></tr>`;}).join('')+
+    `<tr><td>Pts off TOs</td><td>${r.O.pot}</td><td>${r.D.pot}</td></tr><tr><td>2nd chance pts</td><td>${r.O.scp}</td><td>${r.D.scp}</td></tr><tr><td>Points per poss</td><td>${ppp(r.O)}</td><td>${ppp(r.D)}</td></tr></table></div>`;
+  const fouled=S.roster.filter(p=>p.f>0).sort((a,b)=>b.f-a.f||a.n-b.n);
+  const pf=fouled.length?fouled.map(p=>`<div class="tcpf ${isOut(p)?'out':foulTrouble(p)||techs(p)?'trouble':''}"><b>${p.n}</b><span>${esc(p.name.split(' ').pop())}</span><span class="tcdots">${dotsHTML(p)}</span><em>${isOut(p)?outWhy(p):p.f+(techs(p)?' <small>'+techs(p)+'T</small>':'')}</em></div>`).join(''):'<div class="tcnone">No player fouls yet</div>';
+  $('tcBody').innerHTML=`
+    <div class="tchead">${side('us')}<div class="tcmid">${PER[S.period]}</div>${side('them')}</div>
+    <div class="tcflow"><div><span>Current run</span><b>${esc(L.run)}</b></div><div><span>Drought (empty poss.)</span><b>${esc(L.dry)}</b></div><div><span>Largest lead</span><b>${esc(L.lead)}</b></div></div>
+    <div class="tcbox"><div class="tcbt">Player fouls <small>Orange: foul trouble (2 in 1st half, 3 in Q3, 4 anytime, or 1 technical) · black dot = technical</small></div><div class="tcpfs">${pf}</div></div>
+    <div class="tcgrid">${fftab('This quarter · '+PER[S.period],rq)}${fftab('Game',rg)}</div>`;
+}
 
 /* Game report */
 const QS=()=>{const used=new Set(S.poss.map(p=>p.q));used.add(S.period);const out=[];for(let i=0;i<=4;i++)if(i<4||used.has(4))out.push(i);return out;};
@@ -889,6 +1076,7 @@ function reportData(){
     rows.push(['Turnovers',...cols.map(c=>g(c).to)]);
     rows.push(['Off rebounds',...cols.map(c=>g(c).orb)]);
     rows.push(['2nd chance pts',...cols.map(c=>g(c).scp)]);
+    FFROWS.forEach(([lab,k,fmt])=>rows.push([lab,...cols.map(c=>fmt(ff(g(c))[k]))]));
     if(side==='O'&&TRK().ast){const pc=cols.map(c=>pstats(S.poss.filter(c.pred)).T);
       rows.push(['Assists',...pc.map(t=>t.ast)]); rows.push(['Assisted FG %',...pc.map(t=>pct(t.ast,t.fgm))]);}
     rows.push(['Pts off opp TOs',...cols.map(c=>g(c).pot)]);
@@ -898,7 +1086,7 @@ function reportData(){
   let u=0,t=0; const poss=S.poss.map((p,i)=>{ if(p.side==='O')u+=p.pts; else t+=p.pts;
     return {n:i+1,q:PER[p.q],team:p.side==='O'?usName():S.opp,side:p.side,play:label(Object.assign({},p,{pts:0})).replace(/\s+\(\+\d+\)$/,''),
       result:p.pts?'Score':p.end==='to'?'Turnover':p.end==='jump'?'Jump ball':'Empty',pts:p.pts,score:u+'-'+t};});
-  const fouls=S.roster.filter(p=>p.f).map(p=>'#'+p.n+' '+p.name+': '+p.f);
+  const fouls=S.roster.filter(p=>p.f).map(p=>'#'+p.n+' '+p.name+': '+p.f+(techs(p)?' ('+techs(p)+' technical'+(techs(p)>1?'s, ejected':'')+')':''));
   const tos={us:S.to.us,them:S.to.them};
   return {cols,rows,poss,fouls,tos};
 }
@@ -914,6 +1102,8 @@ function openReport(){
     PT.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(r.name)}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
     (PT.un?`<tr><td></td><td style="text-align:left;font-style:italic">Unassigned</td>${PT.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
     `<tr><td></td><td style="text-align:left" class="tot">Team</td>${PT.tot.map(c=>`<td class="tot">${c}</td>`).join('')}</tr></table></div></section>`;}
+  { const L=flowLines(); h+=`<section class="panel"><h3 class="h">Game flow</h3><div style="display:grid;gap:6px;font-size:13px;color:var(--text)">
+    <div><b style="color:var(--ink)">Longest run:</b> ${esc(L.longest)}</div><div><b style="color:var(--ink)">Largest lead:</b> ${esc(L.lead)}</div><div><b style="color:var(--ink)">Lead changes:</b> ${esc(L.changes)}</div><div><b style="color:var(--ink)">Current run:</b> ${esc(L.run)}</div></div></section>`; }
   h+=`<section class="panel"><h3 class="h">Fouls and timeouts</h3><div style="display:grid;gap:6px;font-size:13px;color:var(--text)">
     <div><b style="color:var(--ink)">Player fouls:</b> ${esc(d.fouls.join(', ')||'none')}</div>
     <div><b style="color:var(--ink)">Timeouts used, ${esc(usName())}:</b> ${d.tos.us.full} full, ${d.tos.us.s30} thirty-second</div>
@@ -935,6 +1125,7 @@ function reportText(){
     PTx.rows.forEach(r=>{o+=pad(r.n,4,1)+pad(String(r.name).slice(0,17),18,1)+r.cells.map(c=>pad(c,7)).join('')+'\n';});
     if(PTx.un)o+=pad('',4,1)+pad('Unassigned',18,1)+PTx.un.map(c=>pad(c,7)).join('')+'\n';
     o+=pad('',4,1)+pad('Team',18,1)+PTx.tot.map(c=>pad(c,7)).join('')+'\n';}
+  { const L=flowLines(); o+=`\nGAME FLOW\nLongest run: ${L.longest}\nLargest lead: ${L.lead}\nLead changes: ${L.changes}\n`; }
   o+=`\nPlayer fouls: ${d.fouls.join(', ')||'none'}\nTimeouts ${usName()}: ${d.tos.us.full} full, ${d.tos.us.s30} 30s. ${S.opp}: ${d.tos.them.full} full, ${d.tos.them.s30} 30s\n`;
   if(S.notes)o+=`Notes: ${S.notes}\n`;
   o+=`\nPOSSESSIONS\n`; d.poss.forEach(p=>{o+=`${pad(p.n,3)}  ${p.q}  ${pad(p.score,7,1)} ${p.team}: ${p.play}${p.pts?' (+'+p.pts+')':''}\n`;});
@@ -1009,6 +1200,10 @@ function buildPDF(){
       columnStyles:{0:{cellWidth:26,halign:'right',textColor:C.muted},1:{halign:'left',textColor:C.navy,cellWidth:120}},
       didParseCell:hh=>{ if(hh.section==='head'&&hh.column.index<=1)hh.cell.styles.halign=hh.column.index===0?'right':'left'; if(hh.section==='body'&&hh.column.index>1)hh.cell.styles.halign='right'; }});
     y=doc.lastAutoTable.finalY+22; }
+  // game flow
+  if(y>660){doc.addPage();y=50;}
+  { const L=flowLines(); section('Game flow'); doc.setFontSize(8.5);
+    [['Longest run',L.longest],['Largest lead',L.lead],['Lead changes',L.changes]].forEach(([a,b])=>{doc.setFont(fam,'bold');doc.setTextColor(...C.navy);doc.text(a,M,y+6);doc.setFont(fam,'normal');doc.setTextColor(...C.text);doc.text(b,M+150,y+6);y+=14;}); y+=12; }
   // fouls and timeouts
   if(y>660){doc.addPage();y=50;}
   section('Fouls and timeouts');
@@ -1084,7 +1279,7 @@ function render(){
   const pline=n=>{const r=PSall[n],t=TRK(); if(!r)return ''; const a=[];
     if(t.pts)a.push(r.pts+' pts'); if(t.reb)a.push((r.oreb+r.dreb)+' reb'); if(t.ast&&r.ast)a.push(r.ast+' ast'); if(t.stl&&r.stl)a.push(r.stl+' stl'); if(t.to&&r.tov)a.push(r.tov+' to');
     return a.length?`<small>${a.join(' · ')}</small>`:'';};
-  $('plist').innerHTML=S.roster.map((p,i)=>`<button class="p ${p.f>=5?'out':p.f===4?'f4':p.f===3?'f3':''}" data-i="${i}"><span class="no">${p.n}</span><span class="nm">${esc(p.name)}${pline(p.n)}</span><span class="dots">${[0,1,2,3,4].map(k=>`<i class="${k<p.f?'f':''}"></i>`).join('')}</span></button>`).join('');
+  $('plist').innerHTML=S.roster.map((p,i)=>`<button class="p ${isOut(p)?'out':p.f===4||techs(p)===1?'f4':p.f===3?'f3':''}" data-i="${i}"><span class="no">${p.n}</span><span class="nm">${esc(p.name)}${isOut(p)?`<small class="whyout">${outWhy(p)}</small>`:techs(p)?`<small class="techline">1 technical</small>`:''}${pline(p.n)}</span><span class="dots">${dotsHTML(p)}</span></button>`).join('');
   $('plist').querySelectorAll('.p').forEach(b=>b.onclick=()=>foul(+b.dataset.i));
   $('fixBtn').classList.toggle('on',fixMode);
   $('fixHint').textContent=fixMode?'Tap the player to remove one foul':'Tap a player to add a foul';
@@ -1097,7 +1292,10 @@ function render(){
   document.querySelectorAll('.k:not(.reb):not(.foulk)').forEach(b=>b.disabled=S.awaitReb||!!S.ft);
   renderFT(); renderTag();
   const showFF=!!S.foulFT&&!S.ft&&!S.awaitReb; $('foulFT').hidden=!showFF;
-  if(showFF)$('foulFTTxt').textContent='Shooting or bonus foul? '+(S.cur.side==='O'?usName():S.opp)+' shoots:';
+  if(showFF){ const def=S.foulFT===true||S.foulFT.def; const fouler=S.foulFT.by?tName(S.foulFT.by):'';
+    $('ffDef').hidden=!def; $('ffOff').hidden=def;
+    $('foulFTTxt').textContent=def?`What kind of foul${fouler?' on '+fouler:''}?`:`Foul on ${fouler||'the team with the ball'}. What kind?`;
+    $('ffHint').textContent=def?`Free throws go to ${S.cur.side==='O'?usName():S.opp}. A technical gives them 2 shots and the ball.`:`A technical gives ${S.cur.side==='O'?S.opp:usName()} 2 shots and the ball.`; }
   if(S.ft)$('trail').textContent=label({ev:S.cur.ev,pts:ptsOf(S.cur.ev)})||'Free throws';
   $('flip').disabled=S.cur.ev.length>0;
   $('undo').disabled=!hist.length;
@@ -1130,8 +1328,15 @@ function render(){
     <div class="tile O"><div class="l">Off pts / poss</div><div class="v">${ppp(O)}</div><div class="s">${O.pts} pts on ${O.poss} poss</div></div>
     <div class="tile D"><div class="l">Def pts / poss</div><div class="v">${ppp(D)}</div><div class="s">${D.stops} stops of ${D.poss} (${pct(D.stops,D.poss)})</div></div>
     <div class="tile O"><div class="l">Pts off their TOs</div><div class="v">${O.pot}</div><div class="s">off ${O.tof} forced TOs</div></div>
-    <div class="tile D"><div class="l">Pts off our TOs</div><div class="v">${D.pot}</div><div class="s">off ${D.tof} of our TOs</div></div>`;
+    <div class="tile D"><div class="l">Pts off our TOs</div><div class="v">${D.pot}</div><div class="s">off ${D.tof} of our TOs</div></div>
+    <div class="tile O"><div class="l">Our 2nd chance pts</div><div class="v">${O.scp}</div><div class="s">off ${O.orb} off rebounds</div></div>
+    <div class="tile D"><div class="l">Their 2nd chance pts</div><div class="v">${D.scp}</div><div class="s">off ${D.orb} of their off rebounds</div></div>`;
   const row=(l,a,b)=>`<tr><td>${l}</td><td>${a}</td><td>${b}</td></tr>`;
+  { const L=flowLines();
+    $('flowStrip').innerHTML=`<div><span>Current run</span><b>${esc(L.run)}</b></div><div><span>Longest run</span><b>${esc(L.longest)}</b></div><div><span>Largest lead</span><b>${esc(L.lead)}</b></div><div><span>Lead changes</span><b>${esc(L.changes)}</b></div><div><span>Drought (empty poss.)</span><b>${esc(L.dry)}</b></div>`;
+    const fo=ff(O), fd=ff(D);
+    $('fftbl').innerHTML=`<tr><th></th><th>${esc(usName()).slice(0,12)}</th><th>${esc(S.opp).slice(0,12)}</th></tr>`+FFROWS.map(([lab,k,fmt,hi])=>{const a=fo[k],b=fd[k];const better=a==null||b==null||a===b?0:((a>b)===hi?1:-1);return `<tr><td>${lab}</td><td class="${better>0?'win':''}">${fmt(a)}</td><td class="${better<0?'win':''}">${fmt(b)}</td></tr>`;}).join(''); }
+  if(!$('tocard').hidden)renderCard();
   const curIn=filt==='game'||(filt[0]==='q'&&+filt.slice(1)===S.period)||(filt==='h1'&&S.period<=1)||(filt==='h2'&&S.period>=2);
   const otUsed=S.period>=4||S.poss.some(p=>p.q>=4); const otB=document.querySelector('#seg [data-f=q4]'); if(otB)otB.hidden=!otUsed; if(!otUsed&&filt==='q4'){filt='game';}
   document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on',x.dataset.f===filt));
@@ -1168,7 +1373,8 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 /* Wiring */
 document.querySelectorAll('.k').forEach(b=>b.onclick=()=>act(b.dataset.a));
 $('and1Btn').onclick=and1FT;
-document.querySelectorAll('[data-ffn]').forEach(b=>b.onclick=()=>foulFTOpen(+b.dataset.ffn));
+document.querySelectorAll('[data-ff]').forEach(b=>b.onclick=()=>foulType(b.dataset.ff));
+$('ftTech').onclick=()=>{ if(!S.ft)return; snap(); S.ft.tech=!S.ft.tech; if(S.ft.fpi!=null)markTech(S.ft.fpi,S.ft.tech?undefined:false); commit(); };
 $('ftCancel').onclick=ftCancel;
 $('ftMake').onclick=()=>ftShot(true);
 $('ftMiss').onclick=()=>ftShot(false);
@@ -1230,6 +1436,10 @@ $('bkNo').onclick=()=>{pendingRestore=null;$('bkConfirm').hidden=true;};
 $('bkYes').onclick=()=>{if(!pendingRestore)return;snap();S=pendingRestore;if(!S.us)S.us='FAIRMONT';S.sample=false;pendingRestore=null;
   $('bkConfirm').hidden=true;$('bkText').hidden=true;$('bkText').value='';commit();toast('Backup restored');};
 $('openReport').onclick=openReport;
+$('tcBtn').onclick=openCard;
+$('tcDone').onclick=closeCard;
+$('tocard').addEventListener('click',e=>{if(e.target===$('tocard'))closeCard();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('tocard').hidden)closeCard();});
 document.querySelectorAll('#btabs [data-tab]').forEach(b=>b.onclick=()=>{benchTab=b.dataset.tab;try{localStorage.setItem('fbBenchTab',benchTab);}catch(e){}applyBench();});
 try{benchMQ.addEventListener('change',applyBench);}catch(e){try{benchMQ.addListener(applyBench);}catch(_){}}
 applyBench();
