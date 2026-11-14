@@ -67,8 +67,16 @@ body.bench::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area
 .bench .side{padding:12px 14px}
 .bench .side .lab{font-size:28px}
 .bench .undo{width:56px;height:56px}
-.bench .pchips{grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
-.bench .pchip{min-height:58px}
+.bench .pchips{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.bench .pchip{min-height:84px;gap:4px;border-width:2px}
+.bench .pchip b{font-size:42px}
+.bench .pchip small{font-size:13px;font-weight:700;color:var(--text)}
+.bench .pchip.on small{color:var(--on-navy-muted)}
+.bench #foulRow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.bench .fchip{min-height:84px;min-width:0;border-width:2px}
+.bench .fchip b{font-size:42px}
+.bench .fchip small{font-size:13px;font-weight:700;color:var(--text);max-width:100%}
+.bench #foulOpp{min-height:64px;font-size:22px!important}
 .bench .two{display:none}
 .bench .plist{grid-template-columns:repeat(3,minmax(0,1fr))}
 .bench .p{grid-template-columns:34px 1fr;grid-template-areas:"no nm" "no dots";row-gap:4px;min-height:56px}
@@ -81,10 +89,10 @@ body.bench::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area
 .taghead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .tagq{font-family:var(--label);font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);line-height:1.05}
 .tagbtns{display:flex;gap:6px;flex-wrap:wrap}
-.pchips{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:6px;margin-top:8px}
-.pchip{border:1px solid var(--line);background:var(--chip);border-radius:4px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;color:var(--ink);min-width:0}
-.pchip b{font-family:var(--display);font-size:24px;font-weight:400;line-height:1}
-.pchip small{font-size:10px;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pchips{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin-top:8px}
+.pchip{border:1px solid var(--line);background:var(--chip);border-radius:4px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:68px;color:var(--ink);min-width:0}
+.pchip b{font-family:var(--display);font-size:32px;font-weight:400;line-height:1}
+.pchip small{font-size:11.5px;font-weight:700;color:var(--text);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pchip.on{background:var(--navy);border-color:var(--navy);color:#fff}.pchip.on small{color:var(--on-navy-muted)}
 .pchip.out{opacity:.4}
 .btn.sel{background:var(--navy);border-color:var(--navy);color:#fff}
@@ -220,6 +228,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .ftdots{display:flex;gap:6px;margin-top:8px;align-items:center;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .ftdots i{width:22px;height:22px;border-radius:50%;border:2px solid var(--gray);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:#fff}
 .ftdots i.m{background:var(--navy);border-color:var(--navy)} .ftdots i.x{background:var(--def);border-color:var(--def)} .ftdots i.next{border-color:var(--navy)}
+.foulft{border:2px solid var(--warn);border-radius:6px;padding:8px 10px}
+.foulft .btn{font-weight:700;min-width:64px;min-height:44px}
 .and1{margin-top:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--text)}
 .minis{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 
@@ -253,8 +263,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px soli
 .tos button.u{background:var(--def);border-color:var(--def)}
 
 /* Stats */
-.seg{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:10px}
-.seg button{flex:1;border:0;background:transparent;padding:8px 4px;font-size:12px;font-weight:500;color:var(--ink)}
+.seg{display:grid;border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.segrow{display:flex}
+.segrow+.segrow{border-top:1px solid var(--line)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button{flex:1;min-height:38px;border:0;background:transparent;padding:8px 4px;font-size:12px;font-weight:500;color:var(--ink)}
 .seg button.on{background:var(--navy);color:#fff}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .tile{border:1px solid var(--line);border-radius:4px;padding:8px 10px;border-top-width:4px}
@@ -292,6 +305,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
 .rt th,.rt td{white-space:nowrap}
 .rt tr.grp td{font-weight:700;color:var(--ink);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding-top:12px;border-bottom:1px solid var(--line)}
 .rt td.tot,.rt th.tot{font-weight:700;color:var(--ink)}
+.rt td.half,.rt th.half{background:var(--chip);font-weight:700;color:var(--ink)}
 .pl td:nth-child(3){text-align:left}
 .pl .tm{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
 .toast{position:fixed;z-index:30;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:4px;font-weight:500;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none}
@@ -335,6 +349,8 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <div class="taghead"><div class="tagq" id="tagQ"></div><div class="tagbtns"><button class="btn" id="tagNone" hidden>No assist</button><button class="btn" id="tagSkip">Skip</button></div></div>
       <div class="pchips" id="tagChips"></div>
     </div>
+    <div class="and1 foulft" id="foulFT" hidden><span id="foulFTTxt"></span>
+      <button class="btn" data-ffn="1">1 FT</button><button class="btn" data-ffn="2">2 FT</button><button class="btn" data-ffn="3">3 FT</button></div>
     <div class="and1" id="and1" hidden><span id="and1Txt"></span>
       <button class="btn" id="and1Btn" style="font-weight:700">And-1 free throw</button></div>
     <div class="sheet ftsheet" id="ftSheet" hidden>
@@ -382,7 +398,8 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
   <section class="panel stats">
     <div id="statPart">
     <div class="seg" id="seg">
-      <button data-f="game" class="on">Game</button><button data-f="h1">1st half</button><button data-f="h2">2nd half</button><button data-f="q">This qtr</button>
+      <div class="segrow"><button data-f="q0">Q1</button><button data-f="q1">Q2</button><button data-f="q2">Q3</button><button data-f="q3">Q4</button><button data-f="q4" hidden>OT</button></div>
+      <div class="segrow"><button data-f="h1">1st half</button><button data-f="h2">2nd half</button><button data-f="game" class="on">Game</button></div>
     </div>
     <div class="tiles" id="tiles"></div>
     <table id="tbl"></table>
@@ -546,14 +563,28 @@ function openFoul(){
 }
 function oppFoul(){
   snap();const q=Math.min(S.period,3);S.tf.them[q]++;const [u,t]=score(S);
-  S.feed.unshift({q:S.period,txt:'Foul on '+S.opp+' ('+S.tf.them[q]+' this qtr)',sc:u+'-'+t});commit();
+  S.feed.unshift({q:S.period,txt:'Foul on '+S.opp+' ('+S.tf.them[q]+' this qtr)',sc:u+'-'+t});afterFoul('them');commit();
   toast(S.tf.them[q]===5?'5th team foul. '+usName()+' in the bonus':'Foul on '+S.opp+' ('+S.tf.them[q]+')');
 }
+function afterFoul(team){
+  // team = side that committed the foul ('us' or 'them'); defensive foul = the team without the ball
+  const defensive=(team==='us'&&S.cur.side==='D')||(team==='them'&&S.cur.side==='O');
+  S.foulFT=false; if(!defensive||S.ft)return;
+  const li=S.cur.ev.length-1, le=S.cur.ev[li];
+  if(S.awaitReb&&(le==='x2'||le==='x3')){
+    const by=getTag(S.cur,li,'by'); S.cur.ev.pop(); if(S.cur.tg)delete S.cur.tg[li];
+    S.tag=null; S.awaitReb=false;
+    S.ft={n:le==='x3'?3:2,k:0,res:[],start:S.cur.ev.length,fromMiss:le,missBy:by};
+    if(validN(by))S.ft.by=by;
+    const msg='Shooting foul. '+S.ft.n+' free throws for '+(S.cur.side==='O'?usName():S.opp); setTimeout(()=>toast(msg),900);
+  } else if(!S.awaitReb){ S.foulFT=true; }
+}
+function foulFTOpen(n){ snap(); S.foulFT=false; S.tag=null; S.ft={n,k:0,res:[],start:S.cur.ev.length}; commit(); }
 function act(a){
   if(a==='ft'){closeSheets();openFT();return;}
   if(a==='foul'){openFoul();return;}
   snap();
-  const c=S.cur; S.tag=null;
+  const c=S.cur; S.tag=null; S.foulFT=false;
   if(a==='m2'||a==='m3'){c.ev.push(a);const i=c.ev.length-1;closeInto(S,c,'score');queueTag(S.poss.length-1,i);}
   else if(a==='x2'||a==='x3'){c.ev.push(a);S.awaitReb=true;queueTag('cur',c.ev.length-1);}
   else if(a==='orb'){if(!S.awaitReb){hist.pop();toast('Log the miss first');return;}c.ev.push('orb');S.awaitReb=false;queueTag('cur',c.ev.length-1);}
@@ -682,7 +713,7 @@ function renderDlg(){
   $('dlgBody').querySelectorAll('[data-none]').forEach(b=>b.onclick=()=>{const x=sl[+b.dataset.none];snap();setTag(P,x.key,x.field,-1);commit();renderDlg();});
 }
 function openFT(){
-  snap(); S.tag=null; S.ft={n:S.ftN||2,k:0,res:[],start:S.cur.ev.length}; commit();
+  snap(); S.tag=null; S.foulFT=false; S.ft={n:S.ftN||2,k:0,res:[],start:S.cur.ev.length}; commit();
 }
 function setShooter(n){ if(!S.ft)return; snap(); S.ft.by=n; for(let i=S.ft.start||0;i<S.cur.ev.length;i++){if(S.cur.ev[i].startsWith('ft:'))setTag(S.cur,i,'by',n);} commit(); }
 function setFTn(n){ if(!S.ft||n<=S.ft.k)return; snap(); S.ft.n=n; if(!S.ft.and1)S.ftN=n; commit(); }
@@ -696,7 +727,8 @@ function ftShot(made){
 function ftCancel(){
   if(!S.ft)return; snap();
   const f=S.ft; S.ft=null;
-  if(f.k===0&&f.and1){ closeInto(S,S.cur,'score'); }
+  if(f.k===0&&f.fromMiss){ S.cur.ev.push(f.fromMiss); if(f.missBy!==undefined)setTag(S.cur,S.cur.ev.length-1,'by',f.missBy); S.awaitReb=true; }
+  else if(f.k===0&&f.and1){ closeInto(S,S.cur,'score'); }
   else if(f.k>0){ const last=f.res[f.res.length-1]; if(last){closeInto(S,S.cur,'score');} else {S.awaitReb=true;} }
   commit();
 }
@@ -713,7 +745,7 @@ function renderFT(){
   const f=S.ft; $('ftSheet').hidden=!f; if(!f)return;
   const team=S.cur.side==='O'?usName():S.opp;
   $('ftTitle').textContent=(f.and1?'And-1 free throw':'Free throw')+' · '+(f.k+1)+' of '+f.n;
-  $('ftSub').textContent=team+' shooting. '+(f.k+1<f.n?'More shots after this one.':'Last shot. A miss is a live ball.');
+  $('ftSub').textContent=(f.fromMiss&&f.k===0?'Shooting foul on the missed '+(f.fromMiss==='x3'?'3':'2')+'. Cancel if it was not. ':'')+team+' shooting. '+(f.k+1<f.n?'More shots after this one.':'Last shot. A miss is a live ball.');
   $('ftCount').innerHTML=[1,2,3].map(n=>`<button data-ftn="${n}" class="${n===f.n?'on':''}" ${n<=f.k?'disabled':''} aria-label="${n} free throw${n>1?'s':''} awarded">${n} FT</button>`).join('');
   $('ftCount').querySelectorAll('[data-ftn]').forEach(b=>b.onclick=()=>setFTn(+b.dataset.ftn));
   let d='<span>Shots</span>'; for(let i=0;i<f.n;i++){const r=f.res[i]; d+=`<i class="${r===1?'m':r===0?'x':i===f.k?'next':''}">${r===1?'✓':r===0?'✕':''}</i>`;}
@@ -746,7 +778,7 @@ function addAnd1(m){
 function foul(i,fromPad){
   snap(); const p=S.roster[i]; const q=Math.min(S.period,3);
   if(fixMode&&!fromPad){ if(p.f>0){p.f--; S.tf.us[q]=Math.max(0,S.tf.us[q]-1);} fixMode=false; }
-  else { p.f++; S.tf.us[q]++; const [u,t]=score(S); S.feed.unshift({q:S.period,txt:'Foul #'+p.n+' '+p.name.split(' ').pop()+' ('+p.f+')',sc:u+'-'+t}); toast('Foul #'+p.n+' ('+p.f+'), team '+S.tf.us[q]); if(p.f===4)toast('#'+p.n+' has 4 fouls'); if(p.f>=5)toast('#'+p.n+' fouled out'); if(S.tf.us[q]===5)setTimeout(()=>toast('5th team foul. '+S.opp+' in the bonus'),p.f>=4?1500:0); }
+  else { p.f++; S.tf.us[q]++; const [u,t]=score(S); S.feed.unshift({q:S.period,txt:'Foul #'+p.n+' '+p.name.split(' ').pop()+' ('+p.f+')',sc:u+'-'+t}); afterFoul('us'); toast('Foul #'+p.n+' ('+p.f+'), team '+S.tf.us[q]); if(p.f===4)toast('#'+p.n+' has 4 fouls'); if(p.f>=5)toast('#'+p.n+' fouled out'); if(S.tf.us[q]===5)setTimeout(()=>toast('5th team foul. '+S.opp+' in the bonus'),p.f>=4?1500:0); }
   commit();
 }
 const usName=()=>S.us||'FAIRMONT';
@@ -804,7 +836,7 @@ function timeout(team,kind){
 
 /* Stats */
 let filt='game';
-function inFilt(q){ if(filt==='game')return true; if(filt==='h1')return q<=1; if(filt==='h2')return q>=2; return q===S.period; }
+function inFilt(q){ if(filt==='game')return true; if(filt==='h1')return q<=1; if(filt==='h2')return q>=2; if(filt[0]==='q')return q===+filt.slice(1); return true; }
 function stats(pred){
   pred=pred||(p=>inFilt(p.q)); const all=S.poss; const z=()=>({scp:0,pts:0,poss:0,fgm:0,fga:0,t2m:0,t2a:0,t3m:0,t3a:0,ftm:0,fta:0,to:0,orb:0,stops:0,pot:0,tof:0});
   const r={O:z(),D:z()};
@@ -827,9 +859,12 @@ const ppp=x=>x.poss?(x.pts/x.poss).toFixed(2):'-';
 /* Game report */
 const QS=()=>{const used=new Set(S.poss.map(p=>p.q));used.add(S.period);const out=[];for(let i=0;i<=4;i++)if(i<4||used.has(4))out.push(i);return out;};
 function reportData(){
-  const qs=QS(); const cols=qs.map(q=>({lab:PER[q],r:stats(p=>p.q===q),q})).concat([{lab:'Game',r:stats(()=>true),q:-1}]);
+  const qs=QS(); const mk=(lab,pred,kind,q)=>({lab,pred,kind,q,r:stats(pred)});
+  const cols=[mk('Q1',p=>p.q===0,'q',0),mk('Q2',p=>p.q===1,'q',1),mk('1st half',p=>p.q<=1,'h','h1'),mk('Q3',p=>p.q===2,'q',2),mk('Q4',p=>p.q===3,'q',3),mk('2nd half',p=>p.q>=2&&p.q<=3,'h','h2')];
+  if(qs.includes(4))cols.push(mk('OT',p=>p.q>=4,'q',4));
+  cols.push(mk('Game',()=>true,'g',-1));
   const sum=a=>a.reduce((x,y)=>x+y,0);
-  const tf=k=>cols.map(c=>c.q<0?sum(S.tf[k])+0:(c.q>3?'':S.tf[k][Math.min(c.q,3)]));
+  const tf=k=>cols.map(c=>c.kind==='g'?sum(S.tf[k]):c.q==='h1'?S.tf[k][0]+S.tf[k][1]:c.q==='h2'?S.tf[k][2]+S.tf[k][3]:(c.q>3?'':S.tf[k][Math.min(c.q,3)]));
   // OT fouls share Q4 bucket; show them under Q4
   const rows=[];
   [['O',usName(),'us'],['D',S.opp,'them']].forEach(([side,name,k])=>{
@@ -849,7 +884,7 @@ function reportData(){
     rows.push(['Turnovers',...cols.map(c=>g(c).to)]);
     rows.push(['Off rebounds',...cols.map(c=>g(c).orb)]);
     rows.push(['2nd chance pts',...cols.map(c=>g(c).scp)]);
-    if(side==='O'&&TRK().ast){const pc=cols.map(c=>pstats(S.poss.filter(p=>c.q<0||p.q===c.q)).T);
+    if(side==='O'&&TRK().ast){const pc=cols.map(c=>pstats(S.poss.filter(c.pred)).T);
       rows.push(['Assists',...pc.map(t=>t.ast)]); rows.push(['Assisted FG %',...pc.map(t=>pct(t.ast,t.fgm))]);}
     rows.push(['Pts off opp TOs',...cols.map(c=>g(c).pot)]);
     rows.push(['Team fouls',...tf(k)]);
@@ -865,9 +900,9 @@ function reportData(){
 function openReport(){
   const d=reportData(); const [u,t]=score(S);
   let h=`<div class="rephead"><div><div class="nm">${esc(usName())}</div><div class="meta">Our team</div></div><div class="sc">${u}</div><div class="meta">${PER[S.period]}</div><div class="sc">${t}</div><div style="text-align:right"><div class="nm">${esc(S.opp)}</div><div class="meta">Opponent</div></div></div>`;
-  h+=`<section class="panel"><h3 class="h">Team stats by quarter</h3><div class="tw"><table class="rt"><tr><th></th>${d.cols.map(c=>`<th class="${c.q<0?'tot':''}">${c.lab}</th>`).join('')}</tr>`;
+  h+=`<section class="panel"><h3 class="h">Team stats <small>by quarter, half and game</small></h3><div class="tw"><table class="rt"><tr><th></th>${d.cols.map(c=>`<th class="${c.kind==='g'?'tot':c.kind==='h'?'half':''}">${c.lab}</th>`).join('')}</tr>`;
   d.rows.forEach(r=>{ if(r.grp){h+=`<tr class="grp"><td colspan="${d.cols.length+1}">${esc(r.grp)}</td></tr>`;return;}
-    h+=`<tr><td>${r[0]}</td>${r.slice(1).map((v,i)=>`<td class="${i===d.cols.length-1?'tot':''}">${v}</td>`).join('')}</tr>`;});
+    h+=`<tr><td>${r[0]}</td>${r.slice(1).map((v,i)=>`<td class="${d.cols[i].kind==='g'?'tot':d.cols[i].kind==='h'?'half':''}">${v}</td>`).join('')}</tr>`;});
   h+=`</table></div></section>`;
   const PT=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
   if(PT){h+=`<section class="panel"><h3 class="h">Player stats <small>${esc(usName())}</small></h3><div class="tw"><table class="rt"><tr>${PT.head.map((x,i)=>`<th style="${i<2?'text-align:left':''}">${x}</th>`).join('')}</tr>`+
@@ -943,7 +978,7 @@ function buildPDF(){
     doc.setDrawColor(...C.hair);doc.setLineWidth(.75);doc.line(M+doc.getTextWidth(title.toUpperCase())+title.length*1.4+8,y-3,W-M,y-3);y+=8;};
   const base={font:fam,fontSize:8.5,textColor:C.text,cellPadding:{top:3.5,bottom:3.5,left:5,right:5},lineColor:C.hair,lineWidth:{bottom:.5}};
   // team stats
-  section('Team stats by quarter');
+  section('Team stats by quarter, half and game');
   const head=[['',...d.cols.map(c=>c.lab.toUpperCase())]];
   const body=[];
   d.rows.forEach(r=>{ if(r.grp){body.push([{content:r.grp.toUpperCase(),colSpan:d.cols.length+1,styles:{fontStyle:'bold',textColor:C.navy,fillColor:C.grayBg,fontSize:8,cellPadding:{top:5,bottom:4,left:5,right:5}}}]);return;} body.push(r.map(String)); });
@@ -953,7 +988,9 @@ function buildPDF(){
     columnStyles:Object.fromEntries([[0,{halign:'left',textColor:C.navy,cellWidth:110}],...d.cols.map((c,i)=>[i+1,{halign:'right'}])]),
     didParseCell:h=>{ if(h.section==='head'&&h.column.index===0)h.cell.styles.halign='left';
       if(h.section==='body'&&h.column.index===last&&h.cell.raw&&typeof h.cell.raw==='string')h.cell.styles.fontStyle='bold';
-      if(h.section==='body'&&h.column.index===last)h.cell.styles.textColor=C.navy; }});
+      if(h.section==='body'&&h.column.index===last)h.cell.styles.textColor=C.navy;
+      const ck=h.column.index>0?d.cols[h.column.index-1]:null;
+      if(ck&&ck.kind==='h'&&!(h.cell.raw&&h.cell.raw.colSpan)){ if(h.section==='body'){h.cell.styles.fillColor=C.grayBg;h.cell.styles.fontStyle='bold';h.cell.styles.textColor=C.navy;} } }});
   y=doc.lastAutoTable.finalY+22;
   // player stats
   const PTp=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
@@ -1054,6 +1091,8 @@ function render(){
   document.querySelectorAll('.k.reb').forEach(b=>{b.classList.toggle('hot',S.awaitReb);b.disabled=!S.awaitReb||!!S.ft;});
   document.querySelectorAll('.k:not(.reb):not(.foulk)').forEach(b=>b.disabled=S.awaitReb||!!S.ft);
   renderFT(); renderTag();
+  const showFF=!!S.foulFT&&!S.ft&&!S.awaitReb; $('foulFT').hidden=!showFF;
+  if(showFF)$('foulFTTxt').textContent='Shooting or bonus foul? '+(S.cur.side==='O'?usName():S.opp)+' shoots:';
   if(S.ft)$('trail').textContent=label({ev:S.cur.ev,pts:ptsOf(S.cur.ev)})||'Free throws';
   $('flip').disabled=S.cur.ev.length>0;
   $('undo').disabled=!hist.length;
@@ -1088,7 +1127,9 @@ function render(){
     <div class="tile O"><div class="l">Pts off their TOs</div><div class="v">${O.pot}</div><div class="s">off ${O.tof} forced TOs</div></div>
     <div class="tile D"><div class="l">Pts off our TOs</div><div class="v">${D.pot}</div><div class="s">off ${D.tof} of our TOs</div></div>`;
   const row=(l,a,b)=>`<tr><td>${l}</td><td>${a}</td><td>${b}</td></tr>`;
-  const curIn=filt==='game'||(filt==='q')||(filt==='h1'&&S.period<=1)||(filt==='h2'&&S.period>=2);
+  const curIn=filt==='game'||(filt[0]==='q'&&+filt.slice(1)===S.period)||(filt==='h1'&&S.period<=1)||(filt==='h2'&&S.period>=2);
+  const otUsed=S.period>=4||S.poss.some(p=>p.q>=4); const otB=document.querySelector('#seg [data-f=q4]'); if(otB)otB.hidden=!otUsed; if(!otUsed&&filt==='q4'){filt='game';}
+  document.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on',x.dataset.f===filt));
   const PLIST=S.poss.filter(p=>inFilt(p.q)).concat(curIn&&S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[]);
   const PS=pstats(PLIST);
   $('tbl').innerHTML=`<tr><th></th><th>${esc(usName()).slice(0,12)}</th><th>${esc(S.opp).slice(0,12)}</th></tr>`+
@@ -1122,6 +1163,7 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 /* Wiring */
 document.querySelectorAll('.k').forEach(b=>b.onclick=()=>act(b.dataset.a));
 $('and1Btn').onclick=and1FT;
+document.querySelectorAll('[data-ffn]').forEach(b=>b.onclick=()=>foulFTOpen(+b.dataset.ffn));
 $('ftCancel').onclick=ftCancel;
 $('ftMake').onclick=()=>ftShot(true);
 $('ftMiss').onclick=()=>ftShot(false);
