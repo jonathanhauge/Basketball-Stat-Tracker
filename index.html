@@ -35,6 +35,19 @@
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
+.boxteam{font-family:var(--label);font-size:18px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin-top:14px}
+.boxt{min-width:640px}
+.boxpct{font-size:12px;color:var(--text);margin-top:4px}
+.boxnote{font-size:12px;color:var(--muted);margin:10px 0 0}
+.ginfo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ginfo .wide{grid-column:1 / -1}
+.ginfo label{margin-bottom:2px}
+input[type=date],select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:4px;padding:8px;font:inherit;min-height:38px}
+.stchips{grid-template-columns:repeat(auto-fill,minmax(64px,1fr))!important}
+.stchips .pchip{min-height:52px}
+.stchips .pchip b{font-size:24px}
+.tagstrip.opp{border-color:var(--def)}
+#pWrapOpp .h{color:var(--def)}
 .tcbtn{display:block;width:100%;margin-top:8px;border:2px solid var(--navy);background:var(--panel);color:var(--navy);border-radius:6px;padding:10px;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
 .tcbtn:active{background:var(--navy);color:#fff}
 .flowstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;margin-bottom:10px}
@@ -455,6 +468,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
       <div class="slab" id="foulUsLab">Our team: tap the player</div>
       <div class="row" id="foulRow"></div>
       <div class="slab" id="foulOppLab">Opponent</div>
+      <div class="pchips" id="foulOppRow" hidden></div>
       <div class="row"><button class="btn grow" id="foulOpp" style="font-family:var(--display);font-size:18px;font-weight:800">Opponent team foul</button></div>
     </div>
     <div class="sheet" id="tipSheet" hidden>
@@ -490,6 +504,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     <h2 class="h" style="margin-top:14px">Four Factors</h2>
     <table id="fftbl"></table>
     <table id="tbl"></table>
+    <div id="pWrapOpp" hidden><h2 class="h" style="margin-top:14px" id="pOppTitle">Opponent player stats</h2><div class="ptw"><table class="ptbl" id="ptblOpp"></table></div></div>
     <div id="pWrap" hidden><h2 class="h" style="margin-top:14px">Player stats <small id="pNote"></small></h2><div class="ptw"><table class="ptbl" id="ptbl"></table></div></div>
     </div>
     <div id="logPart">
@@ -525,7 +540,28 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
         <label class="tgl"><input type="checkbox" id="trk-ast" data-trk="ast"><span><b>Assists</b><small>Who passed on a made basket</small></span></label>
         <label class="tgl"><input type="checkbox" id="trk-stl" data-trk="stl"><span><b>Steals</b><small>Who took it on their turnover</small></span></label>
         <label class="tgl"><input type="checkbox" id="trk-to" data-trk="to"><span><b>Turnovers</b><small>Who turned it over</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-blk" data-trk="blk"><span><b>Blocks</b><small>Who blocked the shot</small></span></label>
+        <label class="tgl"><input type="checkbox" id="trk-opp" data-trk="opp"><span><b>Opponent players</b><small>Tag their plays too, using their roster. Easiest after the game from the game log.</small></span></label>
       </div>
+    </div>
+    <div>
+      <label>Game info (for the box score)</label>
+      <div class="ginfo">
+        <div><label for="gDate">Date</label><input type="date" id="gDate"></div>
+        <div><label for="gSite">Site</label><select id="gSite"><option value="home">Home</option><option value="away">Away</option><option value="neutral">Neutral</option></select></div>
+        <div class="wide"><label for="gLoc">Location</label><input type="text" id="gLoc" placeholder="Trent Arena, Kettering"></div>
+        <div><label for="usCode">Our team code</label><input type="text" id="usCode" placeholder="FAIR"></div>
+        <div><label for="oppCode">Opponent code</label><input type="text" id="oppCode" placeholder="BVR"></div>
+        <label class="tgl wide"><input type="checkbox" id="gConf"><span><b>Conference game</b></span></label>
+      </div>
+      <label style="margin-top:12px">Starters <small id="stNote" style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted)"></small></label>
+      <div class="slab" style="margin-top:4px" id="stUsLab">Our starters</div><div class="pchips stchips" id="stUs"></div>
+      <div class="slab" id="stThemLab">Opponent starters</div><div class="pchips stchips" id="stThem"></div>
+    </div>
+    <div>
+      <label for="oppRosterTxt">Opponent roster (number, then name)</label>
+      <textarea id="oppRosterTxt" placeholder="2 Jordan Smith&#10;5 Chris Lee"></textarea>
+      <button class="btn" id="saveOppRoster" style="margin-top:6px">Save opponent roster</button>
     </div>
     <div>
       <label for="rosterTxt">Our roster (number, then name, one per line)</label>
@@ -577,6 +613,7 @@ textarea{min-height:170px;font-variant-numeric:tabular-nums}
     <div class="repbtns">
       <button class="btn" id="repCopy">Copy as text</button>
       <button class="btn" id="repSheet">Copy for spreadsheet</button>
+      <button class="btn" id="repXml">Export StatCrew XML</button>
       <button class="btn" id="repSave" style="background:var(--off);border-color:var(--off);color:#fff;font-weight:700">Save PDF</button>
       <button class="btn" id="repClose" style="background:var(--navy);color:#fff;border-color:var(--navy)">Done</button>
     </div>
@@ -595,11 +632,14 @@ const ROSTER=[[0,'Nolan Stringer'],[1,'Kaden Ralston'],[2,'Kaleb Moore'],[3,'Ash
 const PER=['Q1','Q2','Q3','Q4','OT'];
 const $=id=>document.getElementById(id);
 
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function newInfo(prev){return {date:todayISO(),site:prev&&prev.site||'home',loc:'',conf:true,usCode:prev&&prev.usCode||'',oppCode:''};}
+function ensureState(){ if(!S.info)S.info=newInfo(); if(!S.oppRoster)S.oppRoster=[]; if(!S.starters)S.starters={us:[],them:[]}; if(!S.track)S.track={}; }
 function blank(roster){
   return {us:'FAIRMONT',opp:'Opponent',notes:'',period:0,cur:{side:'O',ev:[]},awaitReb:false,poss:[],
     roster:(roster||ROSTER.map(([n,name])=>({n,name}))).map(p=>({n:p.n,name:p.name,f:0})),
     tf:{us:[0,0,0,0],them:[0,0,0,0]},to:{us:{full:0,s30:0},them:{full:0,s30:0}},
-    arrow:'us',feed:[],sample:false,track:{}};
+    arrow:'us',feed:[],sample:false,track:{},info:newInfo(),oppRoster:[],starters:{us:[],them:[]}};
 }
 function sample(){
   const s=blank(); s.opp='Miamisburg'; s.sample=true; s.notes='#10 shooter (3s). #23 all 2s.';
@@ -637,6 +677,7 @@ let S, hist=[];
 try{const raw=localStorage.getItem(KEY); S=raw?JSON.parse(raw):null;}catch(e){S=null}
 if(!S)S=sample();
 if(!S.us)S.us='FAIRMONT';
+ensureState();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function snap(){hist.push(JSON.stringify(S)); if(hist.length>300)hist.shift();}
 function commit(){save();render();}
@@ -649,13 +690,17 @@ function openFoul(){
   closeSheets();
   $('foulRow').innerHTML=S.roster.map((p,i)=>`<button class="btn fchip ${isOut(p)?'out':p.f===4||techs(p)===1?'f4':p.f===3?'f3':''}" data-fi="${i}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())} · ${p.f}${techs(p)?' ('+techs(p)+'T)':''}</small></button>`).join('');
   $('foulRow').querySelectorAll('[data-fi]').forEach(b=>b.onclick=()=>{$('foulSheet').hidden=true;foul(+b.dataset.fi,true);});
+  const oon=oppOn(); $('foulOppRow').hidden=!oon;
+  if(oon){$('foulOppRow').innerHTML=oppR().map((p,i)=>`<button class="pchip ${(p.f||0)>=5?'out':''}" data-ofi="${i}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())} · ${p.f||0}</small></button>`).join('');
+    $('foulOppRow').querySelectorAll('[data-ofi]').forEach(b=>b.onclick=()=>{$('foulSheet').hidden=true;oppFoul(+b.dataset.ofi);});}
   $('foulOpp').textContent=S.opp+' team foul'; $('foulUsLab').textContent=usName()+': tap the player';
   $('foulSheet').hidden=false; $('tagStrip').hidden=true;
   try{$('foulSheet').scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}
 }
-function oppFoul(){
+function oppFoul(pi){
   snap();const q=Math.min(S.period,3);S.tf.them[q]++;const [u,t]=score(S);
-  S.feed.unshift({q:S.period,txt:'Foul on '+S.opp+' ('+S.tf.them[q]+' this qtr)',sc:u+'-'+t});afterFoul('them');commit();
+  const op=pi!=null?oppR()[pi]:null; if(op)op.f=(op.f||0)+1;
+  S.feed.unshift({q:S.period,txt:'Foul on '+S.opp+(op?' #'+op.n+' '+op.name.split(' ').pop()+' ('+op.f+')':'')+' ('+S.tf.them[q]+' this qtr)',sc:u+'-'+t});afterFoul('them');commit();
   toast(S.tf.them[q]===5?'5th team foul. '+usName()+' in the bonus':'Foul on '+S.opp+' ('+S.tf.them[q]+')');
 }
 function afterFoul(team){
@@ -711,18 +756,24 @@ function act(a){
 const TRK=()=>S.track||(S.track={});
 const anyTrk=()=>Object.values(TRK()).some(Boolean);
 const validN=v=>typeof v==='number'&&v>=0;
+const oppR=()=>S.oppRoster||(S.oppRoster=[]);
+const oppOn=()=>!!TRK().opp&&oppR().length>0;
 function slotsFor(p){
   const t=TRK(), out=[]; if(!p||!p.ev)return out;
+  const O=p.side==='O', own=O?'us':'them', dfn=O?'them':'us';
+  const on=team=>team==='us'||oppOn();
+  const push=(key,field,kind,team,e)=>out.push({key,field,kind,team,e});
   p.ev.forEach((e,i)=>{
-    if(p.side==='O'){
-      if(e==='m2'||e==='m3'){ if(t.pts)out.push({key:i,field:'by',kind:'score',e}); if(t.ast)out.push({key:i,field:'ast',kind:'ast',e}); }
-      else if((e==='x2'||e==='x3')&&t.miss)out.push({key:i,field:'by',kind:'miss',e});
-      else if(e.startsWith('ft:')&&t.pts)out.push({key:i,field:'by',kind:'ft',e});
-      else if(e==='orb'&&t.reb)out.push({key:i,field:'by',kind:'oreb',e});
-      else if(e==='to'&&t.to)out.push({key:i,field:'by',kind:'tov',e});
-    } else if(e==='to'&&t.stl)out.push({key:i,field:'by',kind:'stl',e});
+    if(e==='m2'||e==='m3'){ if(t.pts&&on(own))push(i,'by','score',own,e); if(t.ast&&on(own))push(i,'ast','ast',own,e); }
+    else if(e==='x2'||e==='x3'){ if(t.miss&&on(own))push(i,'by','miss',own,e); if(t.blk&&on(dfn))push(i,'blk','blk',dfn,e); }
+    else if(e.startsWith('ft:')){ if(t.pts&&on(own))push(i,'by','ft',own,e); }
+    else if(e==='orb'){ if(t.reb&&on(own))push(i,'by','oreb',own,e); }
+    else if(e==='to'){
+      if(O){ if(t.to)push(i,'by','tov','us',e); if(t.stl&&oppOn())push(i,'stl','stl','them',e); }
+      else { if(t.stl)push(i,'by','stl','us',e); if(t.to&&oppOn())push(i,'tob','tov','them',e); }
+    }
   });
-  if(p.side==='D'&&p.end==='miss'&&t.reb)out.push({key:'end',field:'by',kind:'dreb',e:'end'});
+  if(p.end==='miss'&&t.reb&&on(dfn))push('end','by','dreb',dfn,'end');
   return out;
 }
 const getTag=(p,key,field)=>p&&p.tg&&p.tg[key]?p.tg[key][field]:undefined;
@@ -730,14 +781,17 @@ function setTag(p,key,field,val){p.tg=p.tg||{};p.tg[key]=p.tg[key]||{};if(val===
 const untagged=p=>slotsFor(p).filter(x=>getTag(p,x.key,x.field)===undefined).length;
 function tagTxt(p,key,e){
   if(!p||!p.tg||!p.tg[key])return '';
-  const by=p.tg[key].by, as=p.tg[key].ast, parts=[];
-  if(validN(by))parts.push((p.side==='D'&&e==='to'?'stl #':'#')+by);
-  if(validN(as))parts.push('ast #'+as);
+  const g=p.tg[key], parts=[];
+  if(validN(g.tob))parts.push('#'+g.tob);
+  if(validN(g.by))parts.push((p.side==='D'&&e==='to'?'stl #':'#')+g.by);
+  if(validN(g.ast))parts.push('ast #'+g.ast);
+  if(validN(g.blk))parts.push('blk #'+g.blk);
+  if(validN(g.stl))parts.push('stl #'+g.stl);
   return parts.length?' ('+parts.join(', ')+')':'';
 }
-const QTXT={score:e=>'Who scored the '+(e==='m3'?'3':'2')+'?',ast:()=>'Assisted by?',miss:e=>'Who missed the '+(e==='x3'?'3':'2')+'?',ft:()=>'Free throw shooter?',oreb:()=>'Who got the offensive rebound?',dreb:()=>'Who got the defensive rebound?',tov:()=>'Who turned it over?',stl:()=>'Who got the steal?'};
-const SLOTNAME={score:e=>'Made '+(e==='m3'?'3':'2')+' · scorer',ast:e=>'Made '+(e==='m3'?'3':'2')+' · assist',miss:e=>'Missed '+(e==='x3'?'3':'2')+' · shooter',ft:e=>(e==='ft:1/1'?'FT make':e==='ft:0/1'?'FT miss':'Free throw')+' · shooter',oreb:()=>'Offensive rebound',dreb:()=>'Defensive rebound',tov:()=>'Turnover by',stl:()=>'Steal by'};
-const NONELAB={ast:'No assist',stl:'No steal'};
+const QTXT={blk:e=>'Who blocked the '+(e==='x3'?'3':'2')+'?',score:e=>'Who scored the '+(e==='m3'?'3':'2')+'?',ast:()=>'Assisted by?',miss:e=>'Who missed the '+(e==='x3'?'3':'2')+'?',ft:()=>'Free throw shooter?',oreb:()=>'Who got the offensive rebound?',dreb:()=>'Who got the defensive rebound?',tov:()=>'Who turned it over?',stl:()=>'Who got the steal?'};
+const SLOTNAME={blk:e=>'Missed '+(e==='x3'?'3':'2')+' · block',score:e=>'Made '+(e==='m3'?'3':'2')+' · scorer',ast:e=>'Made '+(e==='m3'?'3':'2')+' · assist',miss:e=>'Missed '+(e==='x3'?'3':'2')+' · shooter',ft:e=>(e==='ft:1/1'?'FT make':e==='ft:0/1'?'FT miss':'Free throw')+' · shooter',oreb:()=>'Offensive rebound',dreb:()=>'Defensive rebound',tov:()=>'Turnover by',stl:()=>'Steal by'};
+const NONELAB={ast:'No assist',stl:'No steal',blk:'No block'};
 function tagTarget(){ const t=S.tag; if(!t)return null; const P=t.p==='cur'?S.cur:S.poss[t.p]; if(!P)return null; if(t.key!=='end'&&!P.ev[t.key])return null; return P; }
 function queueTag(pref,key){
   const P=pref==='cur'?S.cur:S.poss[pref]; if(!P){S.tag=null;return;}
@@ -751,34 +805,39 @@ function answerTag(val){
   commit(); if(validN(val))toast('#'+val+' · '+SLOTNAME[sl.kind](sl.e));
 }
 function skipTag(){ if(!S.tag)return; snap(); S.tag.fields.shift(); if(!S.tag.fields.length)S.tag=null; commit(); }
-function chipsHTML(sel,excl,attr){
-  return S.roster.map(p=>p.n===excl?'':`<button class="pchip ${isOut(p)?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
+function chipsHTML(sel,excl,attr,team){
+  return (team==='them'?oppR():S.roster).map(p=>p.n===excl?'':`<button class="pchip ${isOut(p)?'out':''} ${p.n===sel?'on':''}" ${attr}="${p.n}" aria-label="#${p.n} ${esc(p.name)}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join('');
 }
 function renderTag(){
   if(!$('foulSheet').hidden){$('tagStrip').hidden=true;return;}
   const sl=curSlot(); $('tagStrip').hidden=!sl; if(!sl){S.tag=null;return;}
-  const P=tagTarget(); $('tagQ').textContent=QTXT[sl.kind](sl.e);
+  const P=tagTarget(); $('tagQ').textContent=QTXT[sl.kind](sl.e)+(oppOn()?' · '+tName(sl.team):'');
+  $('tagStrip').classList.toggle('opp',sl.team==='them');
   const excl=sl.field==='ast'?getTag(P,sl.key,'by'):undefined;
-  $('tagChips').innerHTML=chipsHTML(undefined,excl,'data-tagn');
+  $('tagChips').innerHTML=chipsHTML(undefined,excl,'data-tagn',sl.team);
   $('tagChips').querySelectorAll('[data-tagn]').forEach(b=>b.onclick=()=>answerTag(+b.dataset.tagn));
   const nl=NONELAB[sl.kind]; $('tagNone').hidden=!nl; if(nl)$('tagNone').textContent=nl;
 }
-function pstats(list){
-  const z=()=>({pts:0,fgm:0,fga:0,t3m:0,t3a:0,ftm:0,fta:0,oreb:0,dreb:0,ast:0,stl:0,tov:0});
-  const m={}, T=z(), g=n=>m[n]||(m[n]=z());
-  list.forEach(p=>{ if(!p||!p.ev)return;
+const PZ=()=>({pts:0,fgm:0,fga:0,t3m:0,t3a:0,ftm:0,fta:0,oreb:0,dreb:0,ast:0,stl:0,tov:0,blk:0});
+function pstats(list,team){
+  team=team||'us'; const off=team==='us'?'O':'D';
+  const m={}, T=PZ(), g=n=>m[n]||(m[n]=PZ());
+  list.forEach(p=>{ if(!p||!p.ev)return; const mine=p.side===off;
     p.ev.forEach((e,i)=>{ const by=getTag(p,i,'by'), as=getTag(p,i,'ast');
-      if(p.side==='O'){
+      if(mine){
         if(e==='m2'||e==='m3'){const v=e==='m3'?3:2; T.pts+=v;T.fgm++;T.fga++; if(v===3){T.t3m++;T.t3a++;}
           if(validN(by)){const x=g(by);x.pts+=v;x.fgm++;x.fga++;if(v===3){x.t3m++;x.t3a++;}}
           if(validN(as)){g(as).ast++;T.ast++;}}
         else if(e==='x2'||e==='x3'){T.fga++; if(e==='x3')T.t3a++; if(validN(by)){const x=g(by);x.fga++;if(e==='x3')x.t3a++;}}
         else if(e.startsWith('ft:')){const [mm,aa]=e.slice(3).split('/').map(Number);T.ftm+=mm;T.fta+=aa;T.pts+=mm; if(validN(by)){const x=g(by);x.ftm+=mm;x.fta+=aa;x.pts+=mm;}}
         else if(e==='orb'){T.oreb++; if(validN(by))g(by).oreb++;}
-        else if(e==='to'){T.tov++; if(validN(by))g(by).tov++;}
-      } else if(e==='to'&&validN(by)){g(by).stl++;T.stl++;}
+        else if(e==='to'){T.tov++; const w=off==='O'?by:getTag(p,i,'tob'); if(validN(w))g(w).tov++;}
+      } else {
+        if(e==='x2'||e==='x3'){const bl=getTag(p,i,'blk'); if(validN(bl)){g(bl).blk++;T.blk++;}}
+        else if(e==='to'){const st=off==='O'?by:getTag(p,i,'stl'); if(validN(st)){g(st).stl++;T.stl++;}}
+      }
     });
-    if(p.side==='D'&&p.end==='miss'){T.dreb++; const by=getTag(p,'end','by'); if(validN(by))g(by).dreb++;}
+    if(!mine&&p.end==='miss'){T.dreb++; const b=getTag(p,'end','by'); if(validN(b))g(b).dreb++;}
   });
   return {m,T};
 }
@@ -792,18 +851,19 @@ function pcols(){
   if(t.ast)c.push(['AST',r=>r.ast]);
   if(t.stl)c.push(['STL',r=>r.stl]);
   if(t.to)c.push(['TO',r=>r.tov]);
+  if(t.blk)c.push(['BLK',r=>r.blk]);
   return c;
 }
-function ptable(list){
-  const {m,T}=pstats(list), cols=pcols(); if(!cols.length)return null;
-  const rows=[]; const sum={pts:0,fgm:0,fga:0,t3m:0,t3a:0,ftm:0,fta:0,oreb:0,dreb:0,ast:0,stl:0,tov:0};
-  S.roster.forEach(p=>{const r=m[p.n]; if(!r)return; Object.keys(sum).forEach(k=>sum[k]+=r[k]);
+function ptable(list,team){
+  const {m,T}=pstats(list,team), cols=pcols(); if(!cols.length)return null;
+  const rows=[]; const sum=PZ(); const ROS=team==='them'?oppR():S.roster;
+  ROS.forEach(p=>{const r=m[p.n]; if(!r)return; Object.keys(sum).forEach(k=>sum[k]+=r[k]);
     if(cols.some(([h,f])=>{const v=f(r);return v&&v!=='0/0'&&v!=='-';}))rows.push({n:p.n,name:p.name,cells:cols.map(([h,f])=>f(r))});});
-  Object.keys(m).forEach(n=>{if(!S.roster.some(p=>String(p.n)===String(n))){const r=m[n];Object.keys(sum).forEach(k=>sum[k]+=r[k]);rows.push({n,name:'(not on roster)',cells:cols.map(([h,f])=>f(r))});}});
+  Object.keys(m).forEach(n=>{if(!ROS.some(p=>String(p.n)===String(n))){const r=m[n];Object.keys(sum).forEach(k=>sum[k]+=r[k]);rows.push({n,name:'(not on roster)',cells:cols.map(([h,f])=>f(r))});}});
   const un={}; Object.keys(sum).forEach(k=>un[k]=T[k]-sum[k]);
-  const unCells=cols.map(([h,f])=>(h==='AST'||h==='STL')?'–':(h==='FG%'?'':f(un)));
+  const unCells=cols.map(([h,f])=>(h==='AST'||h==='STL'||h==='BLK')?'–':(h==='FG%'?'':f(un)));
   const anyUn=['pts','fga','fta','oreb','dreb','tov'].some(k=>un[k]>0);
-  return {head:['#','Player',...cols.map(c=>c[0])],rows,un:anyUn?unCells:null,tot:cols.map(([h,f])=>(h==='STL')?T.stl:f(T))};
+  return {head:['#','Player',...cols.map(c=>c[0])],rows,un:anyUn?unCells:null,tot:cols.map(([h,f])=>(h==='STL')?T.stl:(h==='BLK')?T.blk:f(T))};
 }
 function openPlay(pi){
   const P=S.poss[pi]; if(!P)return; dlgPid=pi; renderDlg(); $('dlg').hidden=false; $('dlgDone').focus();
@@ -817,8 +877,8 @@ function renderDlg(){
   let h='';
   if(!sl.length)h='<p style="font-size:13px;color:var(--text);margin:12px 0 0">Nothing to tag on this play with the stats you are tracking.</p>';
   sl.forEach((x,j)=>{const v=getTag(P,x.key,x.field); const nl=NONELAB[x.kind];
-    h+=`<div class="slotrow"><div class="slotlab"><span>${SLOTNAME[x.kind](x.e)}</span>${v===undefined?'<span class="tagme">To tag</span>':`<button class="btn" data-clr="${j}">Clear</button>`}</div>
-      <div class="pchips">${chipsHTML(v,x.field==='ast'?getTag(P,x.key,'by'):undefined,'data-s'+j)}</div>
+    h+=`<div class="slotrow"><div class="slotlab"><span>${SLOTNAME[x.kind](x.e)}${oppOn()?' · '+esc(tName(x.team)):''}</span>${v===undefined?'<span class="tagme">To tag</span>':`<button class="btn" data-clr="${j}">Clear</button>`}</div>
+      <div class="pchips">${chipsHTML(v,x.field==='ast'?getTag(P,x.key,'by'):undefined,'data-s'+j,x.team)}</div>
       ${nl?`<div class="fixrow"><button class="btn ${v===-1?'sel':''}" data-none="${j}">${nl}</button></div>`:''}</div>`;});
   $('dlgBody').innerHTML=h;
   sl.forEach((x,j)=>{
@@ -868,8 +928,8 @@ function renderFT(){
   $('ftDots').innerHTML=d;
   $('ftCancel').textContent=f.k===0?'Cancel':'Stop here';
   $('ftTech').classList.toggle('sel',!!f.tech); $('ftTech').hidden=!!f.and1||!!f.fromMiss;
-  const showSh=!!TRK().pts&&S.cur.side==='O'; $('ftShoot').hidden=!showSh;
-  if(showSh){$('ftShootChips').innerHTML=chipsHTML(f.by,undefined,'data-shn');$('ftShootChips').querySelectorAll('[data-shn]').forEach(b=>b.onclick=()=>setShooter(+b.dataset.shn));}
+  const showSh=!!TRK().pts&&(S.cur.side==='O'||oppOn()); $('ftShoot').hidden=!showSh;
+  if(showSh){$('ftShootChips').innerHTML=chipsHTML(f.by,undefined,'data-shn',S.cur.side==='O'?'us':'them');$('ftShootChips').querySelectorAll('[data-shn]').forEach(b=>b.onclick=()=>setShooter(+b.dataset.shn));}
 }
 let ftAnd=false;
 function openFTOld(and1){
@@ -1048,6 +1108,88 @@ function renderCard(){
     <div class="tcgrid">${fftab('This quarter · '+PER[S.period],rq)}${fftab('Game',rg)}</div>`;
 }
 
+/* Box score (both teams) + StatCrew XML */
+const BOXCOLS=[['FG',r=>r.fgm+'-'+r.fga],['3PT',r=>r.t3m+'-'+r.t3a],['FT',r=>r.ftm+'-'+r.fta],['OR',r=>r.oreb],['DR',r=>r.dreb],['REB',r=>r.oreb+r.dreb],['PF',r=>r.pf],['A',r=>r.ast],['TO',r=>r.tov],['BLK',r=>r.blk],['STL',r=>r.stl],['PTS',r=>r.pts]];
+function allPoss(){ return S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[]); }
+function box(team){
+  const ALL=allPoss(), {m,T}=pstats(ALL,team), ROS=team==='us'?S.roster:oppR(), st=(S.starters&&S.starters[team])||[];
+  const players=[]; const sum=PZ(); let pfSum=0;
+  ROS.forEach(p=>{ const r=m[p.n], pf=p.f||0, gs=st.includes(p.n);
+    if(!r&&!pf&&!gs)return; const x=Object.assign(PZ(),r||{},{n:p.n,name:p.name,gs,pf,tf:team==='us'?techs(p):0});
+    Object.keys(sum).forEach(k=>sum[k]+=x[k]); pfSum+=pf; players.push(x); });
+  Object.keys(m).forEach(n=>{ if(!ROS.some(p=>String(p.n)===String(n))){ const x=Object.assign(PZ(),m[n],{n,name:'#'+n,gs:false,pf:0,tf:0}); Object.keys(sum).forEach(k=>sum[k]+=x[k]); players.push(x);} });
+  players.sort((a,b)=>(b.gs-a.gs)||(+a.n-+b.n));
+  const teamFouls=S.tf[team].reduce((a,b)=>a+b,0);
+  const tm=PZ(); ['pts','fgm','fga','t3m','t3a','ftm','fta','oreb','dreb','tov'].forEach(k=>tm[k]=Math.max(0,T[k]-sum[k])); tm.pf=Math.max(0,teamFouls-pfSum);
+  const tot=Object.assign(PZ(),T,{pf:Math.max(teamFouls,pfSum)});
+  const side=team==='us'?'O':'D', maxQ=Math.max(3,...ALL.map(p=>p.q)); const line=[];
+  for(let q=0;q<=maxQ;q++)line.push(ALL.filter(p=>p.side===side&&p.q===q).reduce((a,p)=>a+ptsOf(p.ev),0));
+  const anyTeam=Object.values(tm).some(v=>v>0);
+  return {team,name:tName(team),players,tm:anyTeam?tm:null,tot,line};
+}
+function xe(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function nameParts(full){const w=String(full).trim().split(/\s+/); const last=w.length>1?w.pop():w[0]; return {first:w.length&&w[0]!==last?w.join(' '):'',last};}
+function teamCode(team){ const c=team==='us'?S.info.usCode:S.info.oppCode; return (c||tName(team).replace(/[^A-Za-z0-9]/g,'').slice(0,8)).toUpperCase(); }
+function statcrewXML(){
+  const I=S.info, us=box('us'), them=box('them'); const r=stats(()=>true);
+  const usHome=I.site!=='away'; const home=usHome?us:them, vis=usHome?them:us;
+  const [y,mo,d]=(I.date||todayISO()).split('-'); const mdY=`${mo}/${d}/${y}`;
+  const now=new Date(); const gen=`${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}/${now.getFullYear()}`;
+  const sa=(x,pf,tf,dq)=>`fgm="${x.fgm}" fga="${x.fga}" fgm3="${x.t3m}" fga3="${x.t3a}" ftm="${x.ftm}" fta="${x.fta}" tp="${x.pts}" blk="${x.blk}" stl="${x.stl}" ast="${x.ast}" min="0" oreb="${x.oreb}" dreb="${x.dreb}" treb="${x.oreb+x.dreb}" pf="${pf}" tf="${tf||0}" to="${x.tov}" dq="${dq?1:0}"`;
+  const teamXML=(b,vh)=>{
+    const special=b.team==='us'?r.O:r.D;
+    let t=`  <team vh="${vh}" id="${xe(teamCode(b.team))}" name="${xe(b.name)}" record="">\n`;
+    t+=`    <linescore line="${b.line.join(',')}" score="${b.tot.pts}">\n`+b.line.map((v,i)=>`      <lineprd prd="${i+1}" score="${v}"/>\n`).join('')+`    </linescore>\n`;
+    t+=`    <totals>\n      <stats ${sa(b.tot,b.tot.pf,b.players.reduce((a,p)=>a+(p.tf||0),0),false)}/>\n      <special pts_to="${special.pot}" pts_ch2="${special.scp}" pts_paint="0" pts_fastb="0" pts_bench="0"/>\n    </totals>\n`;
+    b.players.forEach(p=>{ const np=nameParts(p.name); const nm=np.first?`${np.last}, ${np.first}`:np.last;
+      t+=`    <player uni="${xe(p.n)}" code="${xe(p.n)}" name="${xe(nm)}" checkname="${xe((np.last+(np.first?','+np.first:'')).toUpperCase())}" gp="1" gs="${p.gs?1:0}" oncourt="N">\n      <stats ${sa(p,p.pf,p.tf,p.pf>=5||(p.tf||0)>=2)}/>\n    </player>\n`; });
+    if(b.tm)t+=`    <player uni="TM" code="TM" name="TEAM" checkname="TEAM" gp="0" gs="0" oncourt="N">\n      <stats ${sa(b.tm,b.tm.pf,0,false)}/>\n    </player>\n`;
+    return t+`  </team>\n`;
+  };
+  const gid=(I.date||todayISO()).replace(/-/g,'')+teamCode(vis.team)+teamCode(home.team);
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<bbgame source="Fairmont Bench Tracker" version="1.0" generated="${gen}">\n`+
+    `  <venue gameid="${xe(gid)}" visid="${xe(teamCode(vis.team))}" homeid="${xe(teamCode(home.team))}" visname="${xe(vis.name)}" homename="${xe(home.name)}" date="${mdY}" location="${xe(I.loc)}" time="" attend="" schednote="" leaguegame="${I.conf?'Y':'N'}" neutralgame="${I.site==='neutral'?'Y':'N'}" postseason="N">\n`+
+    `    <officials text=""/>\n    <rules prds="4" minutes="8" minutesot="4" qh="Q"/>\n  </venue>\n`+
+    teamXML(vis,'V')+teamXML(home,'H')+`</bbgame>\n`;
+}
+function exportXML(){
+  const I=S.info; const fn=`${I.date||todayISO()} ${usName()} vs ${S.opp}.xml`.replace(/[\\/:*?"<>|]/g,'');
+  offerFile(new Blob([statcrewXML()],{type:'application/xml'}),fn,'application/xml');
+}
+function boxHTML(){
+  const bs=[box('us'),box('them')], per=bs[0].line.map((_,i)=>i<4?'Q'+(i+1):(i===4?'OT':'OT'+(i-3)));
+  let h=`<section class="panel"><h3 class="h">Box score <small>Use this to enter the game by hand</small></h3>`;
+  h+=`<div class="tw"><table class="rt"><tr><th style="text-align:left">Team</th>${per.map(x=>`<th>${x}</th>`).join('')}<th class="tot">Final</th></tr>`+
+     bs.map(b=>`<tr><td style="text-align:left;font-weight:700;color:var(--ink)">${esc(b.name)}</td>${b.line.map(v=>`<td>${v}</td>`).join('')}<td class="tot">${b.tot.pts}</td></tr>`).join('')+`</table></div>`;
+  bs.forEach(b=>{
+    h+=`<div class="boxteam">${esc(b.name)}</div><div class="tw"><table class="rt boxt"><tr><th>#</th><th style="text-align:left">Player</th>${BOXCOLS.map(c=>`<th>${c[0]}</th>`).join('')}</tr>`+
+      b.players.map(p=>`<tr><td>${esc(p.n)}</td><td style="text-align:left">${esc(p.name)}${p.gs?' *':''}${(p.tf||0)?` <small style="color:var(--warn)">(${p.tf}T)</small>`:''}</td>${BOXCOLS.map(c=>`<td>${c[1](p)}</td>`).join('')}</tr>`).join('')+
+      (b.tm?`<tr><td></td><td style="text-align:left;font-style:italic">TEAM</td>${BOXCOLS.map(c=>`<td>${['A','BLK','STL'].includes(c[0])?'':c[1](b.tm)}</td>`).join('')}</tr>`:'')+
+      `<tr><td></td><td style="text-align:left" class="tot">Totals</td>${BOXCOLS.map(c=>`<td class="tot">${c[1](b.tot)}</td>`).join('')}</tr></table></div>`+
+      `<div class="boxpct">FG ${pct(b.tot.fgm,b.tot.fga)} · 3PT ${pct(b.tot.t3m,b.tot.t3a)} · FT ${pct(b.tot.ftm,b.tot.fta)}</div>`;
+  });
+  return h+`<p class="boxnote">* = starter. The TEAM line holds plays not tagged to a player. Minutes are not tracked.</p></section>`;
+}
+function boxText(){
+  const pad=(v,n,l)=>{v=String(v);return l?v.padEnd(n):v.padStart(n);};
+  let o='\nBOX SCORE\n'; const bs=[box('us'),box('them')];
+  o+=pad('',16,1)+bs[0].line.map((_,i)=>pad(i<4?'Q'+(i+1):'OT',5)).join('')+pad('F',5)+'\n';
+  bs.forEach(b=>{o+=pad(b.name.slice(0,15),16,1)+b.line.map(v=>pad(v,5)).join('')+pad(b.tot.pts,5)+'\n';});
+  bs.forEach(b=>{ o+=`\n${b.name.toUpperCase()}\n`+pad('#',4,1)+pad('Player',20,1)+BOXCOLS.map(c=>pad(c[0],7)).join('')+'\n';
+    b.players.forEach(p=>{o+=pad(p.n,4,1)+pad((String(p.name)+(p.gs?' *':'')).slice(0,19),20,1)+BOXCOLS.map(c=>pad(c[1](p),7)).join('')+'\n';});
+    if(b.tm)o+=pad('',4,1)+pad('TEAM',20,1)+BOXCOLS.map(c=>pad(['A','BLK','STL'].includes(c[0])?'':c[1](b.tm),7)).join('')+'\n';
+    o+=pad('',4,1)+pad('Totals',20,1)+BOXCOLS.map(c=>pad(c[1](b.tot),7)).join('')+'\n'; });
+  return o+'* = starter\n';
+}
+function boxTSV(){
+  const T=a=>a.map(v=>String(v).replace(/\t|\n/g,' ')).join('\t'); let o=''; const bs=[box('us'),box('them')];
+  bs.forEach(b=>{ o+='\n'+T([b.name+' box score'])+'\n'+T(['#','Player','GS',...BOXCOLS.map(c=>c[0])])+'\n';
+    b.players.forEach(p=>{o+=T([p.n,p.name,p.gs?'Y':'',...BOXCOLS.map(c=>"'"+c[1](p))])+'\n';});
+    if(b.tm)o+=T(['','TEAM','',...BOXCOLS.map(c=>['A','BLK','STL'].includes(c[0])?'':"'"+c[1](b.tm))])+'\n';
+    o+=T(['','Totals','',...BOXCOLS.map(c=>"'"+c[1](b.tot))])+'\n'; });
+  return o;
+}
+
 /* Game report */
 const QS=()=>{const used=new Set(S.poss.map(p=>p.q));used.add(S.period);const out=[];for(let i=0;i<=4;i++)if(i<4||used.has(4))out.push(i);return out;};
 function reportData(){
@@ -1097,7 +1239,7 @@ function openReport(){
   d.rows.forEach(r=>{ if(r.grp){h+=`<tr class="grp"><td colspan="${d.cols.length+1}">${esc(r.grp)}</td></tr>`;return;}
     h+=`<tr><td>${r[0]}</td>${r.slice(1).map((v,i)=>`<td class="${d.cols[i].kind==='g'?'tot':d.cols[i].kind==='h'?'half':''}">${v}</td>`).join('')}</tr>`;});
   h+=`</table></div></section>`;
-  const PT=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
+  const PT=null; h+=boxHTML();
   if(PT){h+=`<section class="panel"><h3 class="h">Player stats <small>${esc(usName())}</small></h3><div class="tw"><table class="rt"><tr>${PT.head.map((x,i)=>`<th style="${i<2?'text-align:left':''}">${x}</th>`).join('')}</tr>`+
     PT.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(r.name)}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
     (PT.un?`<tr><td></td><td style="text-align:left;font-style:italic">Unassigned</td>${PT.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
@@ -1120,7 +1262,7 @@ function reportText(){
   const w=[16,...d.cols.map(()=>8)]; const pad=(v,n,l)=>{v=String(v);return l?v.padEnd(n):v.padStart(n);};
   let o=`${usName()} ${u}, ${S.opp} ${t} (${PER[S.period]})\n\nTEAM STATS\n`+pad('',w[0],1)+d.cols.map((c,i)=>pad(c.lab,w[i+1])).join('')+'\n';
   d.rows.forEach(r=>{o+=r.grp?`\n${r.grp.toUpperCase()}\n`:pad(r[0],w[0],1)+r.slice(1).map((v,i)=>pad(v,w[i+1])).join('')+'\n';});
-  const PTx=anyTrk()?ptable(S.poss):null;
+  const PTx=null; o+=boxText();
   if(PTx){o+='\nPLAYER STATS\n'+pad('#',4,1)+pad('Player',18,1)+PTx.head.slice(2).map(x=>pad(x,7)).join('')+'\n';
     PTx.rows.forEach(r=>{o+=pad(r.n,4,1)+pad(String(r.name).slice(0,17),18,1)+r.cells.map(c=>pad(c,7)).join('')+'\n';});
     if(PTx.un)o+=pad('',4,1)+pad('Unassigned',18,1)+PTx.un.map(c=>pad(c,7)).join('')+'\n';
@@ -1135,7 +1277,7 @@ function reportTSV(){
   const d=reportData(); const T=a=>a.map(v=>String(v).replace(/\t|\n/g,' ')).join('\t');
   let o=T(['Team stats',...d.cols.map(c=>c.lab)])+'\n';
   d.rows.forEach(r=>{o+=r.grp?T([r.grp])+'\n':T(r)+'\n';});
-  const PTs=anyTrk()?ptable(S.poss):null;
+  const PTs=null; o+=boxTSV();
   if(PTs){o+='\n'+T(PTs.head)+'\n'; PTs.rows.forEach(r=>{o+=T([r.n,r.name,...r.cells.map(c=>"'"+c)])+'\n';}); if(PTs.un)o+=T(['','Unassigned',...PTs.un.map(c=>"'"+c)])+'\n'; o+=T(['','Team',...PTs.tot.map(c=>"'"+c)])+'\n';}
   o+='\n'+T(['#','Qtr','Team','Play','Result','Pts','Score'])+'\n';
   d.poss.forEach(p=>{o+=T([p.n,p.q,p.team,p.play,p.result,p.pts,"'"+p.score])+'\n';});
@@ -1188,8 +1330,28 @@ function buildPDF(){
       const ck=h.column.index>0?d.cols[h.column.index-1]:null;
       if(ck&&ck.kind==='h'&&!(h.cell.raw&&h.cell.raw.colSpan)){ if(h.section==='body'){h.cell.styles.fillColor=C.grayBg;h.cell.styles.fontStyle='bold';h.cell.styles.textColor=C.navy;} } }});
   y=doc.lastAutoTable.finalY+22;
-  // player stats
-  const PTp=anyTrk()?ptable(S.poss.concat(S.cur.ev.length?[Object.assign({q:S.period},S.cur)]:[])):null;
+  // box score
+  { const bs=[box('us'),box('them')];
+    if(y>560){doc.addPage();y=50;}
+    section('Box score');
+    const perH=bs[0].line.map((_,i)=>i<4?'Q'+(i+1):'OT');
+    doc.autoTable({startY:y,head:[['TEAM',...perH,'FINAL']],body:bs.map(b=>[b.name,...b.line.map(String),String(b.tot.pts)]),margin:{left:M,right:M,top:50},theme:'plain',styles:base,
+      headStyles:{font:fam,fontStyle:'bold',fontSize:7.5,textColor:[255,255,255],fillColor:C.navy,halign:'right'},columnStyles:{0:{halign:'left',fontStyle:'bold',textColor:C.navy,cellWidth:150}},
+      didParseCell:hh=>{ if(hh.section==='head'&&hh.column.index===0)hh.cell.styles.halign='left'; if(hh.section==='body'&&hh.column.index>0)hh.cell.styles.halign='right'; }});
+    y=doc.lastAutoTable.finalY+14;
+    bs.forEach(b=>{ if(y>620){doc.addPage();y=50;}
+      doc.setFont(fam,'bold');doc.setFontSize(9);doc.setTextColor(...C.navy);doc.text(b.name.toUpperCase(),M,y);y+=6;
+      const body=b.players.map(p=>[String(p.n),p.name+(p.gs?' *':'')+((p.tf||0)?' ('+p.tf+'T)':''),...BOXCOLS.map(c=>String(c[1](p)))]);
+      if(b.tm)body.push(['',{content:'TEAM',styles:{textColor:C.muted}},...BOXCOLS.map(c=>({content:['A','BLK','STL'].includes(c[0])?'':String(c[1](b.tm)),styles:{textColor:C.muted}}))]);
+      body.push(['',{content:'Totals',styles:{fontStyle:'bold',textColor:C.navy}},...BOXCOLS.map(c=>({content:String(c[1](b.tot)),styles:{fontStyle:'bold',textColor:C.navy}}))]);
+      doc.autoTable({startY:y,head:[['#','PLAYER',...BOXCOLS.map(c=>c[0])]],body,margin:{left:M,right:M,top:50},theme:'plain',styles:Object.assign({},base,{fontSize:8}),
+        headStyles:{font:fam,fontStyle:'bold',fontSize:7,textColor:[255,255,255],fillColor:C.navy,halign:'right'},
+        columnStyles:{0:{cellWidth:22,halign:'right',textColor:C.muted},1:{halign:'left',textColor:C.navy,cellWidth:120}},
+        didParseCell:hh=>{ if(hh.section==='head'&&hh.column.index===1)hh.cell.styles.halign='left'; if(hh.section==='body'&&hh.column.index>1)hh.cell.styles.halign='right'; }});
+      y=doc.lastAutoTable.finalY+4; doc.setFont(fam,'normal');doc.setFontSize(7.5);doc.setTextColor(...C.muted);
+      doc.text(`FG ${pct(b.tot.fgm,b.tot.fga)} · 3PT ${pct(b.tot.t3m,b.tot.t3a)} · FT ${pct(b.tot.ftm,b.tot.fta)}`,M,y+8); y+=20; });
+    doc.setFontSize(7.5);doc.setTextColor(...C.muted);doc.text('* = starter. TEAM = plays not tagged to a player. Minutes are not tracked.',M,y);y+=18; }
+  const PTp=null;
   if(PTp){ if(y>600){doc.addPage();y=50;}
     section(`Player stats · ${usName()}`);
     const bodyP=PTp.rows.map(r=>[r.n,r.name,...r.cells.map(String)]);
@@ -1258,6 +1420,21 @@ function applyBench(){
 function btos(k){
   const t=S.to[k], pip=(kind,i,used)=>`<button class="pip ${used?'u':''}" data-t="${k}|${kind}" aria-label="${kind==='full'?'Full':'30 second'} timeout ${i+1}${used?', used':''}"></button>`;
   return `<div class="btos"><span>TO</span>${[0,1,2].map(i=>pip('full',i,i<t.full)).join('')}<span class="sep">30</span>${[0,1].map(i=>pip('s30',i,i<t.s30)).join('')}</div>`;
+}
+
+function renderSetup(){
+  const I=S.info, set=(id,v)=>{const el=$(id); if(el&&document.activeElement!==el){ if(el.type==='checkbox')el.checked=!!v; else el.value=v==null?'':v; }};
+  set('gDate',I.date); set('gSite',I.site); set('gLoc',I.loc); set('usCode',I.usCode); set('oppCode',I.oppCode); set('gConf',I.conf);
+  if(document.activeElement!==$('oppRosterTxt'))$('oppRosterTxt').value=oppR().map(p=>p.n+' '+p.name).join('\n');
+  const st=(id,team)=>{const ros=team==='us'?S.roster:oppR(), sel=S.starters[team]||[];
+    const html=ros.length?ros.map(p=>`<button class="pchip ${sel.includes(p.n)?'on':''}" data-st="${team}|${p.n}"><b>${p.n}</b><small>${esc(p.name.split(' ').pop())}</small></button>`).join(''):'<div style="font-size:12px;color:var(--muted)">Add the opponent roster to pick their starters.</div>';
+    const el=$(id); if(el._h!==html){el._h=html;el.innerHTML=html;}};
+  st('stUs','us'); st('stThem','them');
+  $('stNote').textContent=`(${(S.starters.us||[]).length}/5 · ${(S.starters.them||[]).length}/5)`;
+  if(!renderSetup.bound){renderSetup.bound=true; ['stUs','stThem'].forEach(id=>$(id).addEventListener('click',ev=>{const b=ev.target.closest('[data-st]'); if(!b)return; stTap(b);}));}
+}
+function stTap(b){ (()=>{const [team,n]=b.dataset.st.split('|'); const arr=S.starters[team]||(S.starters[team]=[]); const v=+n; const i=arr.indexOf(v);
+    snap(); if(i>=0)arr.splice(i,1); else { if(arr.length>=5){hist.pop();toast('Already 5 starters. Tap one to remove it first');return;} arr.push(v);} commit();})();
 }
 
 /* Render */
@@ -1354,6 +1531,12 @@ function render(){
       PT.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(String(r.name).split(' ').pop())}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
       (PT.un?`<tr class="un"><td></td><td style="text-align:left">Unassigned</td>${PT.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
       `<tr class="tot"><td></td><td style="text-align:left">Team</td>${PT.tot.map(c=>`<td>${c}</td>`).join('')}</tr>`; }
+  const PTo=oppOn()?ptable(PLIST,'them'):null; $('pWrapOpp').hidden=!PTo;
+  if(PTo){ $('pOppTitle').textContent=S.opp+' player stats';
+    $('ptblOpp').innerHTML=`<tr>${PTo.head.map((h,i)=>`<th style="${i<2?'text-align:left':''}">${h}</th>`).join('')}</tr>`+
+      PTo.rows.map(r=>`<tr><td>${r.n}</td><td style="text-align:left">${esc(String(r.name).split(' ').pop())}</td>${r.cells.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')+
+      (PTo.un?`<tr class="un"><td></td><td style="text-align:left">Unassigned</td>${PTo.un.map(c=>`<td>${c}</td>`).join('')}</tr>`:'')+
+      `<tr class="tot"><td></td><td style="text-align:left">Team</td>${PTo.tot.map(c=>`<td>${c}</td>`).join('')}</tr>`; }
   const totalUn=anyTrk()?S.poss.reduce((a,p)=>a+untagged(p),0):0;
   $('untagOnly').hidden=!anyTrk(); $('untagOnly').textContent=untagOnly?'Show all plays':'Show only untagged'+(totalUn?` (${totalUn})`:'');
   const rowsF=S.feed.filter(f=>{ if(!untagOnly)return true; const P=f.pid?S.poss[f.pid-1]:null; return P&&untagged(P)>0; }).slice(0,untagOnly?400:80);
@@ -1362,6 +1545,7 @@ function render(){
     return `<div class="${ok?'click':''}" ${ok?`data-pid="${f.pid}" role="button" tabindex="0"`:''}><span><span style="color:var(--muted)">${PER[f.q]}</span> ${esc(txt)}${un?`<span class="tagme">${un} to tag</span>`:''}</span><b>${f.sc}</b></div>`;}).join('')||`<div>${untagOnly?'Everything is tagged':'Nothing logged yet'}</div>`;
   $('feed').querySelectorAll('[data-pid]').forEach(d=>{d.onclick=()=>openPlay(+d.dataset.pid-1);d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openPlay(+d.dataset.pid-1);}};});
   document.querySelectorAll('[data-trk]').forEach(cb=>{cb.checked=!!TRK()[cb.dataset.trk];});
+  renderSetup();
 
   if(document.activeElement!==$('oppName'))$('oppName').value=S.opp;
   if(document.activeElement!==$('usName'))$('usName').value=usName();
@@ -1399,7 +1583,7 @@ $('saveRoster').onclick=()=>{
 };
 $('newGame').onclick=()=>$('confirmBox').hidden=false;
 $('noNew').onclick=()=>$('confirmBox').hidden=true;
-$('yesNew').onclick=()=>{snap();const opp='Opponent';const keepUs=S.us,keepTrk=Object.assign({},S.track||{});S=blank(S.roster);S.opp=opp;S.us=keepUs||'FAIRMONT';S.track=keepTrk;$('confirmBox').hidden=true;commit();toast('New game ready');};
+$('yesNew').onclick=()=>{snap();const opp='Opponent';const keepUs=S.us,keepTrk=Object.assign({},S.track||{}),keepInfo=S.info;S=blank(S.roster);S.opp=opp;S.us=keepUs||'FAIRMONT';S.track=keepTrk;S.info=newInfo(keepInfo);$('confirmBox').hidden=true;commit();toast('New game ready');};
 
 /* Backup and restore */
 function stamp(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
@@ -1433,9 +1617,16 @@ $('bkPasteBtn').onclick=()=>{const box=$('bkText');
   if(box.hidden||!box.value.trim()){box.hidden=false;box.value='';box.focus();toast('Paste the backup in the box, then tap Restore from text again');return;}
   askRestore(box.value);};
 $('bkNo').onclick=()=>{pendingRestore=null;$('bkConfirm').hidden=true;};
-$('bkYes').onclick=()=>{if(!pendingRestore)return;snap();S=pendingRestore;if(!S.us)S.us='FAIRMONT';S.sample=false;pendingRestore=null;
+$('bkYes').onclick=()=>{if(!pendingRestore)return;snap();S=pendingRestore;if(!S.us)S.us='FAIRMONT';ensureState();S.sample=false;pendingRestore=null;
   $('bkConfirm').hidden=true;$('bkText').hidden=true;$('bkText').value='';commit();toast('Backup restored');};
 $('openReport').onclick=openReport;
+['gDate','gSite','gLoc','usCode','oppCode'].forEach(id=>{$(id).addEventListener('change',e=>{const k={gDate:'date',gSite:'site',gLoc:'loc',usCode:'usCode',oppCode:'oppCode'}[id]; S.info[k]=e.target.value.trim(); save(); render();});});
+$('gConf').addEventListener('change',e=>{S.info.conf=e.target.checked;save();});
+$('saveOppRoster').onclick=()=>{
+  const old={}; oppR().forEach(p=>old[p.n]=p.f||0);
+  const list=$('oppRosterTxt').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const m=l.match(/^(\d+)\s*(.*)$/);return m?{n:+m[1],name:(m[2]||'#'+m[1]).trim(),f:old[+m[1]]||0}:null}).filter(Boolean);
+  snap(); S.oppRoster=list; S.starters.them=(S.starters.them||[]).filter(n=>list.some(p=>p.n===n)); commit(); toast(list.length?'Opponent roster saved ('+list.length+')':'Opponent roster cleared');
+};
 $('tcBtn').onclick=openCard;
 $('tcDone').onclick=closeCard;
 $('tocard').addEventListener('click',e=>{if(e.target===$('tocard'))closeCard();});
@@ -1455,6 +1646,7 @@ $('repClose').onclick=()=>{$('report').hidden=true;};
 $('repCopy').onclick=()=>copyOut(reportText(),'Report copied');
 $('repSheet').onclick=()=>copyOut(reportTSV(),'Copied. Paste into Sheets, Numbers or Excel');
 $('repSave').onclick=savePDF;
+$('repXml').onclick=exportXML;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('report').hidden)$('report').hidden=true;});
 $('copy').onclick=()=>{
   const [u,t]=score(S); filt='game'; const r=stats(),O=r.O,D=r.D;
